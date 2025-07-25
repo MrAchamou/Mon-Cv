@@ -1743,7 +1743,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>iv>
         </div>
     </div>
 
@@ -2340,7 +2340,7 @@
                 });
             }
             
-            if (formData.skills.length < 5) {
+            if (formData.skills.length < 5) {) {
                 suggestions.push({
                     type: 'Compétences',
                     text: 'Listez plus de compétences techniques et soft skills pertinentes à votre domaine.'
@@ -2378,7 +2378,25 @@
             // Calculate ATS score
             let atsScore = 60;
             if (formData.basics.summary) atsScore += 10;
-            if (formData.experience.length > 0) atsScore += 15;
+            if (formData.experience.length >= 2) atsScore += 15;
+            if (formData.skills.length >= 5) atsScore += 10;
+            if (formData.basics.phone) atsScore += 5;
+            
+            // Calculate completeness score
+            let completenessScore = 50;
+            if (formData.basics.name) completenessScore += 10;
+            if (formData.basics.email) completenessScore += 10;
+            if (formData.basics.summary) completenessScore += 10;
+            if (formData.experience.length > 0) completenessScore += 10;
+            if (formData.skills.length > 0) completenessScore += 10;
+            
+            // Update UI elements (assuming these elements exist)
+            const atsElement = document.getElementById('ats-score');
+            const completenessElement = document.getElementById('completeness-score');
+            
+            if (atsElement) atsElement.textContent = Math.min(100, atsScore) + '%';
+            if (completenessElement) completenessElement.textContent = Math.min(100, completenessScore) + '%';
+        } (formData.experience.length > 0) atsScore += 15;
             if (formData.skills.length > 3) atsScore += 10;
             if (formData.basics.phone) atsScore += 5;
             
