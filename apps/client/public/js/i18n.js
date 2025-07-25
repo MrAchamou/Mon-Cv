@@ -297,6 +297,11 @@ class I18n {
 
     // Obtenir une traduction par clé
     t(key, defaultValue = '') {
+        if (!this.translations || !this.translations[this.currentLanguage]) {
+            console.log(`Translation not found for key: ${key}`);
+            return defaultValue || key;
+        }
+
         const keys = key.split('.');
         let value = this.translations[this.currentLanguage];
         
@@ -305,26 +310,35 @@ class I18n {
                 value = value[k];
             } else {
                 // Fallback vers l'anglais si la clé n'existe pas dans la langue courante
-                if (this.currentLanguage !== 'en') {
+                if (this.currentLanguage !== 'en' && this.translations['en']) {
                     let englishValue = this.translations['en'];
                     const keysAgain = key.split('.');
+                    let found = true;
+                    
                     for (const kEn of keysAgain) {
                         if (englishValue && typeof englishValue === 'object' && kEn in englishValue) {
                             englishValue = englishValue[kEn];
                         } else {
-                            englishValue = null;
+                            found = false;
                             break;
                         }
                     }
-                    if (englishValue) {
+                    
+                    if (found && typeof englishValue === 'string') {
                         return englishValue;
                     }
                 }
+                console.log(`Translation not found for key: ${key}`);
                 return defaultValue || key;
             }
         }
         
-        return value || defaultValue || key;
+        if (typeof value === 'string') {
+            return value;
+        }
+        
+        console.log(`Translation not found for key: ${key}`);
+        return defaultValue || key;
     }
 
     // Changer la langue
