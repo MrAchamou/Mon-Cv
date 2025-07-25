@@ -1,0 +1,2521 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de CV - Reactive Resume</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light theme colors */
+            --zinc-50: 250 250 250;
+            --zinc-100: 244 244 245;
+            --zinc-200: 228 228 231;
+            --zinc-300: 212 212 216;
+            --zinc-400: 161 161 170;
+            --zinc-500: 113 113 122;
+            --zinc-600: 82 82 91;
+            --zinc-700: 63 63 70;
+            --zinc-800: 39 39 42;
+            --zinc-900: 24 24 27;
+            --zinc-950: 9 9 11;
+
+            /* Primary colors */
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --primary-foreground: #ffffff;
+
+            /* Status colors */
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #22c55e;
+            --info: #3b82f6;
+
+            /* Light theme variables */
+            --background: rgb(var(--zinc-50));
+            --foreground: rgb(var(--zinc-950));
+            --surface: rgb(var(--zinc-100));
+            --surface-alt: rgb(var(--zinc-200));
+            --border: rgb(var(--zinc-300));
+            --border-light: rgb(var(--zinc-200));
+            --text: rgb(var(--zinc-950));
+            --text-light: rgb(var(--zinc-600));
+            --text-muted: rgb(var(--zinc-500));
+            --card: rgb(var(--zinc-50));
+            --card-foreground: rgb(var(--zinc-950));
+            --muted: rgb(var(--zinc-100));
+            --muted-foreground: rgb(var(--zinc-500));
+            --accent: rgb(var(--zinc-100));
+            --accent-foreground: rgb(var(--zinc-900));
+            --destructive: var(--danger);
+            --destructive-foreground: #ffffff;
+            --input: rgb(var(--zinc-200));
+            --ring: var(--primary);
+
+            /* Shadows */
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-dark: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+
+            /* Border radius */
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+
+        .dark {
+            /* Dark theme variables */
+            --background: rgb(var(--zinc-950));
+            --foreground: rgb(var(--zinc-50));
+            --surface: rgb(var(--zinc-900));
+            --surface-alt: rgb(var(--zinc-800));
+            --border: rgb(var(--zinc-700));
+            --border-light: rgb(var(--zinc-800));
+            --text: rgb(var(--zinc-50));
+            --text-light: rgb(var(--zinc-400));
+            --text-muted: rgb(var(--zinc-500));
+            --card: rgb(var(--zinc-950));
+            --card-foreground: rgb(var(--zinc-50));
+            --muted: rgb(var(--zinc-900));
+            --muted-foreground: rgb(var(--zinc-400));
+            --accent: rgb(var(--zinc-800));
+            --accent-foreground: rgb(var(--zinc-50));
+            --input: rgb(var(--zinc-800));
+            --ring: var(--primary-light);
+
+            /* Dark theme shadows */
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -1px rgb(0 0 0 / 0.2);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 10px 10px -5px rgb(0 0 0 / 0.3);
+            --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            color: var(--text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #764ba2 100%);
+            opacity: 0.03;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .dark body::before {
+            opacity: 0.05;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(var(--zinc-50), 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .dark .header {
+            background: rgba(var(--zinc-950), 0.95);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-select {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .language-select:hover {
+            border-color: var(--primary);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            background: var(--surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .theme-icon-light,
+        .theme-icon-dark {
+            position: absolute;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            color: var(--text);
+        }
+
+        .theme-icon-light {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+
+        .theme-icon-dark {
+            transform: translateY(100%) rotate(180deg);
+            opacity: 0;
+        }
+
+        .dark .theme-icon-light {
+            transform: translateY(-100%) rotate(-180deg);
+            opacity: 0;
+        }
+
+        .dark .theme-icon-dark {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* CV Builder */
+        .cv-builder {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .dark .cv-builder {
+            box-shadow: var(--shadow-dark);
+        }
+
+        .builder-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .builder-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .builder-subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
+
+        .builder-content {
+            padding: 0;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.25rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.2s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            background: var(--background);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: var(--surface-alt);
+            color: var(--text);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2.5rem;
+            min-height: 500px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--input);
+            color: var(--text);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: var(--background);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .dark .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Dynamic Lists */
+        .dynamic-list {
+            margin-top: 1.5rem;
+        }
+
+        .list-item {
+            background: var(--muted);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .list-item:hover {
+            border-color: var(--primary);
+            background: var(--accent);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .item-remove {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .item-remove:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        .add-item-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .add-item-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Template Selection */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .template-card {
+            background: var(--card);
+            border: 3px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+
+        .template-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .template-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .template-info {
+            padding: 1.5rem;
+        }
+
+        .template-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .template-description {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .template-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.2s;
+        }
+
+        .template-card.selected .template-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--surface-alt);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface);
+            border-color: var(--primary);
+        }
+
+        /* Loading & Results */
+        .loading, .result {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading.show, .result.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            border: 2px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .result-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .result-link {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-link:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            position: fixed;
+            top: 0;
+            right: -50%;
+            width: 50%;
+            height: 100vh;
+            background: var(--background);
+            border-left: 1px solid var(--border);
+            transition: all 0.3s ease;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-panel.open {
+            right: 0;
+        }
+
+        .preview-header {
+            background: var(--card);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .preview-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.2s;
+        }
+
+        .preview-close:hover {
+            color: var(--text);
+        }
+
+        .preview-content {
+            flex: 1;
+            overflow: auto;
+            padding: 1rem;
+        }
+
+        .preview-cv {
+            background: white;
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius);
+            max-width: 100%;
+            margin: 0 auto;
+            transform: scale(0.8);
+            transform-origin: top center;
+        }
+
+        .cv-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 2rem;
+            background: white;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .cv-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .cv-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .cv-contact {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .cv-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .cv-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cv-summary {
+            margin-bottom: 1.5rem;
+            color: #555;
+            text-align: justify;
+        }
+
+        .cv-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cv-item:last-child {
+            border-bottom: none;
+        }
+
+        .cv-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .cv-item-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .cv-item-subtitle {
+            color: #666;
+            font-style: italic;
+        }
+
+        .cv-item-date {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .cv-item-description {
+            color: #555;
+            margin-top: 0.5rem;
+        }
+
+        .cv-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .cv-skill {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.25rem 0;
+        }
+
+        .cv-skill-level {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .preview-toggle {
+            position: fixed;
+            top: 50%;
+            right: 1rem;
+            z-index: 150;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s;
+            transform: translateY(-50%);
+        }
+
+        .preview-toggle:hover {
+            background: var(--primary-dark);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .preview-toggle.hidden {
+            right: -70px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .preview-panel {
+                width: 60%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tab {
+                min-width: auto;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .result-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .preview-panel {
+                width: 100%;
+                right: -100%;
+            }
+
+            .preview-toggle {
+                right: 1rem;
+            }
+
+            .cv-page {
+                transform: scale(0.6);
+            }
+
+            .cv-contact {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .cv-item-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cv-skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* AI Suggestions */
+        .ai-suggestions-panel {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .ai-suggestion-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ai-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-content p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ai-results {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            margin-top: 1rem;
+        }
+
+        .ai-results h4 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-suggestion-item {
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .ai-suggestion-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .ai-suggestion-item .suggestion-type {
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .ai-suggestion-item .suggestion-text {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* Customization Panel */
+        .customization-panel {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 2px solid var(--border);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .color-picker-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .color-picker-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .color-input {
+            width: 100%;
+            height: 50px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-input:hover {
+            border-color: var(--primary);
+        }
+
+        .color-presets {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .color-preset {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .color-preset:hover {
+            transform: scale(1.1);
+            border-color: var(--text);
+        }
+
+        .color-preset.active {
+            border-color: var(--text);
+            box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--text);
+        }
+
+        .font-selector {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Stats and Analytics */
+        .cv-analytics {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .analytics-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+        }
+
+        .analytics-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .analytics-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Export Options */
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .export-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .export-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .export-card .export-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .export-card .export-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .export-card .export-description {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .customization-panel {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .ai-suggestion-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .color-presets {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-file-alt"></i>
+                    <span data-i18n="generator.title">Générateur de CV Pro</span>
+                </div>
+                <div class="language-selector">
+                    <button id="themeToggle" class="theme-toggle" title="Changer de thème">
+                        <i class="fas fa-sun theme-icon-light"></i>
+                        <i class="fas fa-moon theme-icon-dark"></i>
+                    </button>
+                    <select id="languageSelect" class="language-select">
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="en">🇬🇧 English</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h1 class="hero-title fade-in" data-i18n="generator.title">
+                    Générateur de CV Professionnel
+                </h1>
+                <p class="hero-subtitle fade-in" data-i18n="generator.subtitle">
+                    Créez votre CV parfait en quelques minutes avec notre générateur intelligent et moderne
+                </p>
+                
+                <!-- Stats -->
+                <div class="stats-grid fade-in">
+                    <div class="stat-card">
+                        <div class="stat-number">12+</div>
+                        <div class="stat-label">Templates Premium</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50k+</div>
+                        <div class="stat-label">CV Créés</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Langues</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Gratuit</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CV Builder -->
+            <div class="cv-builder fade-in">
+                <div class="builder-header">
+                    <h2 class="builder-title" data-i18n="generator.builderTitle">Créateur de CV Intelligent</h2>
+                    <p class="builder-subtitle" data-i18n="generator.builderSubtitle">
+                        Suivez les étapes pour créer votre CV parfait
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div class="builder-content">
+                    <!-- Navigation -->
+                    <nav class="nav-tabs">
+                        <button class="nav-tab active" data-tab="basics">
+                            <i class="fas fa-user"></i>
+                            <span data-i18n="generator.tabs.basics">Informations de base</span>
+                        </button>
+                        <button class="nav-tab" data-tab="experience">
+                            <i class="fas fa-briefcase"></i>
+                            <span data-i18n="generator.tabs.experience">Expérience</span>
+                        </button>
+                        <button class="nav-tab" data-tab="education">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span data-i18n="generator.tabs.education">Formation</span>
+                        </button>
+                        <button class="nav-tab" data-tab="skills">
+                            <i class="fas fa-cogs"></i>
+                            <span data-i18n="generator.tabs.skills">Compétences</span>
+                        </button>
+                        <button class="nav-tab" data-tab="generate">
+                            <i class="fas fa-magic"></i>
+                            <span data-i18n="generator.tabs.generate">Générer</span>
+                        </button>
+                    </nav>
+
+                    <!-- Tab Contents -->
+                    <!-- Basics Tab -->
+                    <div class="tab-content active" data-content="basics">
+                        <form class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-circle"></i>
+                                <span data-i18n="generator.sections.personal">Informations personnelles</span>
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="generator.fields.firstName">Prénom</label>
+                                    <input type="text" class="form-input" id="firstName" placeholder="John">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="generator.fields.lastName">Nom</label>
+                                    <input type="text" class="form-input" id="lastName" placeholder="Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="generator.fields.email">Email</label>
+                                    <input type="email" class="form-input" id="email" placeholder="john.doe@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="generator.fields.phone">Téléphone</label>
+                                    <input type="tel" class="form-input" id="phone" placeholder="+33 1 23 45 67 89">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="generator.fields.location">Ville</label>
+                                    <input type="text" class="form-input" id="location" placeholder="Paris, France">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-i18n="generator.fields.website">Site web</label>
+                                    <input type="url" class="form-input" id="website" placeholder="https://johndoe.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="generator.fields.summary">Résumé professionnel</label>
+                                <textarea class="form-input form-textarea" id="summary" placeholder="Décrivez votre profil professionnel..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Experience Tab -->
+                    <div class="tab-content" data-content="experience">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-briefcase"></i>
+                                <span data-i18n="generator.sections.experience">Expérience professionnelle</span>
+                            </h3>
+                            <div id="experienceList" class="dynamic-list">
+                                <!-- Experience items will be added here -->
+                            </div>
+                            <button type="button" class="add-item-btn" onclick="addExperience()">
+                                <i class="fas fa-plus"></i>
+                                <span data-i18n="generator.buttons.addExperience">Ajouter une expérience</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Education Tab -->
+                    <div class="tab-content" data-content="education">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span data-i18n="generator.sections.education">Formation</span>
+                            </h3>
+                            <div id="educationList" class="dynamic-list">
+                                <!-- Education items will be added here -->
+                            </div>
+                            <button type="button" class="add-item-btn" onclick="addEducation()">
+                                <i class="fas fa-plus"></i>
+                                <span data-i18n="generator.buttons.addEducation">Ajouter une formation</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div class="tab-content" data-content="skills">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-cogs"></i>
+                                <span data-i18n="generator.sections.skills">Compétences</span>
+                            </h3>
+                            <div id="skillsList" class="dynamic-list">
+                                <!-- Skills items will be added here -->
+                            </div>
+                            <button type="button" class="add-item-btn" onclick="addSkill()">
+                                <i class="fas fa-plus"></i>
+                                <span data-i18n="generator.buttons.addSkill">Ajouter une compétence</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Generate Tab -->
+                    <div class="tab-content" data-content="generate">
+                        <!-- AI Suggestions Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-robot"></i>
+                                <span data-i18n="generator.sections.ai">Assistant IA</span>
+                            </h3>
+                            <div class="ai-suggestions-panel">
+                                <div class="ai-suggestion-card">
+                                    <div class="ai-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="ai-content">
+                                        <h4>Suggestions intelligentes</h4>
+                                        <p>Notre IA analysera votre profil pour suggérer des améliorations</p>
+                                        <button class="btn-ai" onclick="generateAISuggestions()">
+                                            <i class="fas fa-magic"></i>
+                                            Analyser mon CV
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="ai-results" id="aiResults" style="display: none;">
+                                    <h4><i class="fas fa-check-circle"></i> Recommandations</h4>
+                                    <div id="aiSuggestionsList"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Color Customization Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-palette"></i>
+                                <span data-i18n="generator.sections.customization">Personnalisation avancée</span>
+                            </h3>
+                            <div class="customization-panel">
+                                <div class="color-picker-section">
+                                    <label class="form-label">Couleur principale</label>
+                                    <div class="color-picker-container">
+                                        <input type="color" id="primaryColor" class="color-input" value="#3b82f6">
+                                        <div class="color-presets">
+                                            <button class="color-preset" data-color="#3b82f6" style="background: #3b82f6"></button>
+                                            <button class="color-preset" data-color="#dc2626" style="background: #dc2626"></button>
+                                            <button class="color-preset" data-color="#059669" style="background: #059669"></button>
+                                            <button class="color-preset" data-color="#7c3aed" style="background: #7c3aed"></button>
+                                            <button class="color-preset" data-color="#ea580c" style="background: #ea580c"></button>
+                                            <button class="color-preset" data-color="#0891b2" style="background: #0891b2"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="font-selector">
+                                    <label class="form-label">Police de caractères</label>
+                                    <select class="form-input" id="fontFamily">
+                                        <option value="Inter">Inter (Moderne)</option>
+                                        <option value="Georgia">Georgia (Classique)</option>
+                                        <option value="Roboto">Roboto (Tech)</option>
+                                        <option value="Playfair Display">Playfair Display (Élégant)</option>
+                                        <option value="Source Sans Pro">Source Sans Pro (Professionnel)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-layer-group"></i>
+                                <span data-i18n="generator.sections.template">Choisissez votre template</span>
+                            </h3>
+                            <div class="template-grid">
+                                <div class="template-card" data-template="azurill">
+                                    <div class="template-preview">
+                                        <img src="/templates/jpg/azurill.jpg" alt="Template Azurill">
+                                        <div class="template-badge">Sélectionné</div>
+                                    </div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">Azurill</h4>
+                                        <p class="template-description" data-i18n="generator.templates.modern">Moderne et élégant</p>
+                                    </div>
+                                </div>
+                                <div class="template-card" data-template="ditto">
+                                    <div class="template-preview">
+                                        <img src="/templates/jpg/ditto.jpg" alt="Template Ditto">
+                                        <div class="template-badge">Sélectionné</div>
+                                    </div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">Ditto</h4>
+                                        <p class="template-description" data-i18n="generator.templates.classic">Classique et professionnel</p>
+                                    </div>
+                                </div>
+                                <div class="template-card selected" data-template="pikachu">
+                                    <div class="template-preview">
+                                        <img src="/templates/jpg/pikachu.jpg" alt="Template Pikachu">
+                                        <div class="template-badge">Sélectionné</div>
+                                    </div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">Pikachu</h4>
+                                        <p class="template-description" data-i18n="generator.templates.creative">Créatif et coloré</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="loading" id="loading">
+                            <div class="spinner"></div>
+                            <h3 data-i18n="generator.messages.generating">Génération de votre CV en cours...</h3>
+                            <p>Veuillez patienter quelques instants...</p>
+                        </div>
+
+                        <!-- CV Analytics -->
+                        <div class="cv-analytics">
+                            <h4 class="section-title">
+                                <i class="fas fa-chart-line"></i>
+                                Analyse de votre CV
+                            </h4>
+                            <div class="analytics-grid">
+                                <div class="analytics-item">
+                                    <div class="analytics-score" id="atsScore">85</div>
+                                    <div class="analytics-label">Score ATS</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <div class="analytics-score" id="completenessScore">92</div>
+                                    <div class="analytics-label">Complétude</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <div class="analytics-score" id="readabilityScore">88</div>
+                                    <div class="analytics-label">Lisibilité</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <div class="analytics-score" id="keywordScore">76</div>
+                                    <div class="analytics-label">Mots-clés</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result" id="result">
+                            <div class="result-success">
+                                <h3 data-i18n="generator.messages.success">✅ CV généré avec succès !</h3>
+                                <p>Votre CV professionnel est prêt à être utilisé avec un score d'optimisation de <span id="finalScore">85%</span>.</p>
+                            </div>
+                            
+                            <!-- Advanced Export Options -->
+                            <div class="export-options">
+                                <div class="export-card" onclick="exportCV('pdf')">
+                                    <div class="export-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="export-title">PDF Premium</div>
+                                    <div class="export-description">Haute qualité, optimisé pour l'impression</div>
+                                </div>
+                                <div class="export-card" onclick="exportCV('word')">
+                                    <div class="export-icon">
+                                        <i class="fas fa-file-word"></i>
+                                    </div>
+                                    <div class="export-title">Word (.docx)</div>
+                                    <div class="export-description">Modifiable, compatible ATS</div>
+                                </div>
+                                <div class="export-card" onclick="exportCV('link')">
+                                    <div class="export-icon">
+                                        <i class="fas fa-link"></i>
+                                    </div>
+                                    <div class="export-title">Lien partageable</div>
+                                    <div class="export-description">URL publique pour partager</div>
+                                </div>
+                                <div class="export-card" onclick="exportCV('json')">
+                                    <div class="export-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="export-title">JSON/XML</div>
+                                    <div class="export-description">Format structuré pour développeurs</div>
+                                </div>
+                            </div>
+
+                            <div class="result-links">
+                                <a href="#" class="result-link" id="viewLink" target="_blank">
+                                    <i class="fas fa-eye"></i>
+                                    <span data-i18n="generator.buttons.view">Voir le CV</span>
+                                </a>
+                                <a href="#" class="result-link" id="downloadLink" target="_blank">
+                                    <i class="fas fa-download"></i>
+                                    <span data-i18n="generator.buttons.download">Télécharger PDF</span>
+                                </a>
+                                <a href="#" class="result-link" id="editLink" target="_blank">
+                                    <i class="fas fa-edit"></i>
+                                    <span data-i18n="generator.buttons.edit">Modifier</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousTab()">
+                        <i class="fas fa-arrow-left"></i>
+                        Précédent
+                    </button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextTab()">
+                        Suivant
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="generateBtn" onclick="generateCV()" style="display: none;">
+                        <i class="fas fa-magic"></i>
+                        <span data-i18n="generator.buttons.generate">Générer mon CV</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Preview Toggle Button -->
+        <button class="preview-toggle" id="previewToggle">
+            <i class="fas fa-eye"></i>
+        </button>
+
+        <!-- Preview Panel -->
+        <div class="preview-panel" id="previewPanel">
+            <div class="preview-header">
+                <h3 class="preview-title">
+                    <i class="fas fa-eye"></i>
+                    <span data-i18n="preview.title">Aperçu en temps réel</span>
+                </h3>
+                <button class="preview-close" id="previewClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="preview-content">
+                <div class="preview-cv" id="previewCV">
+                    <div class="cv-page">
+                        <div class="cv-header">
+                            <h1 class="cv-name" id="preview-name">Votre nom</h1>
+                            <div class="cv-contact" id="preview-contact">
+                                <span id="preview-email">email@example.com</span>
+                                <span id="preview-phone">+33 1 23 45 67 89</span>
+                                <span id="preview-location">Ville, Pays</span>
+                                <span id="preview-website">site-web.com</span>
+                            </div>
+                        </div>
+
+                        <div class="cv-section" id="preview-summary-section">
+                            <h2 class="cv-section-title">Résumé Professionnel</h2>
+                            <div class="cv-summary" id="preview-summary">
+                                Votre résumé professionnel apparaîtra ici...
+                            </div>
+                        </div>
+
+                        <div class="cv-section" id="preview-experience-section">
+                            <h2 class="cv-section-title">Expérience Professionnelle</h2>
+                            <div id="preview-experience">
+                                <!-- Experience items will be populated here -->
+                            </div>
+                        </div>
+
+                        <div class="cv-section" id="preview-education-section">
+                            <h2 class="cv-section-title">Formation</h2>
+                            <div id="preview-education">
+                                <!-- Education items will be populated here -->
+                            </div>
+                        </div>
+
+                        <div class="cv-section" id="preview-skills-section">
+                            <h2 class="cv-section-title">Compétences</h2>
+                            <div class="cv-skills-grid" id="preview-skills">
+                                <!-- Skills will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/i18n.js"></script>
+    <script>
+        // Variables globales
+        let currentTab = 0;
+        let selectedTemplate = 'pikachu';
+        let generatedResumeId = null;
+        const tabs = ['basics', 'experience', 'education', 'skills', 'generate'];
+
+        // Initialisation du thème
+        function initializeTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch (error) {
+                console.log('Theme initialization error:', error);
+            }
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialiser le thème en premier
+            initializeTheme();
+            
+            // Ajouter l'event listener pour le toggle de thème
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+
+            // Écouter les changements de préférence système
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    if (e.matches) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                }
+            });
+
+            if (window.i18n && window.i18n.onInitialized) {
+                window.i18n.onInitialized(() => {
+                    initializeApp();
+                });
+            } else {
+                // Fallback si i18n n'est pas disponible
+                setTimeout(initializeApp, 100);
+            }
+        });
+
+        function initializeApp() {
+            initializeTabs();
+            initializeTemplateSelection();
+            initializePreview();
+            updateProgress();
+            updateButtons();
+            
+            // Ajouter des éléments par défaut
+            addExperience();
+            addEducation();
+            addSkill();
+
+            // Initialiser la prévisualisation
+            updatePreview();
+
+            // Traduire la page si i18n est disponible
+            if (window.i18n && window.i18n.translatePage) {
+                window.i18n.translatePage();
+            }
+        }
+
+        // Gestion des onglets
+        function initializeTabs() {
+            const tabButtons = document.querySelectorAll('.nav-tab');
+            tabButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => switchTab(index));
+            });
+        }
+
+        function switchTab(index) {
+            if (index < 0 || index >= tabs.length) return;
+            
+            currentTab = index;
+            
+            // Mettre à jour les boutons d'onglets
+            document.querySelectorAll('.nav-tab').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            
+            // Mettre à jour le contenu
+            document.querySelectorAll('.tab-content').forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+                if (i === index) {
+                    content.classList.add('fade-in');
+                }
+            });
+            
+            updateProgress();
+            updateButtons();
+        }
+
+        function nextTab() {
+            if (currentTab < tabs.length - 1) {
+                switchTab(currentTab + 1);
+            }
+        }
+
+        function previousTab() {
+            if (currentTab > 0) {
+                switchTab(currentTab - 1);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentTab + 1) / tabs.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const generateBtn = document.getElementById('generateBtn');
+            
+            prevBtn.style.display = currentTab === 0 ? 'none' : 'flex';
+            
+            if (currentTab === tabs.length - 1) {
+                nextBtn.style.display = 'none';
+                generateBtn.style.display = 'flex';
+            } else {
+                nextBtn.style.display = 'flex';
+                generateBtn.style.display = 'none';
+            }
+        }
+
+        // Gestion des templates
+        function initializeTemplateSelection() {
+            const templateCards = document.querySelectorAll('.template-card');
+            templateCards.forEach(card => {
+                card.addEventListener('click', () => selectTemplate(card.dataset.template));
+            });
+        }
+
+        function selectTemplate(template) {
+            selectedTemplate = template;
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.template === template);
+            });
+        }
+
+        // Fonctions pour les listes dynamiques
+        function addExperience() {
+            const list = document.getElementById('experienceList');
+            const id = 'exp_' + Date.now();
+            const html = `
+                <div class="list-item slide-in" data-id="${id}">
+                    <div class="item-header">
+                        <span class="item-title">Expérience professionnelle</span>
+                        <button type="button" class="item-remove" onclick="removeItem('${id}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Poste</label>
+                            <input type="text" class="form-input" name="position_${id}" placeholder="Développeur Full-Stack">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Entreprise</label>
+                            <input type="text" class="form-input" name="company_${id}" placeholder="Tech Company">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de début</label>
+                            <input type="month" class="form-input" name="startDate_${id}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de fin</label>
+                            <input type="month" class="form-input" name="endDate_${id}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input form-textarea" name="description_${id}" placeholder="Décrivez vos missions et réalisations..."></textarea>
+                    </div>
+                </div>
+            `;
+            list.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addEducation() {
+            const list = document.getElementById('educationList');
+            const id = 'edu_' + Date.now();
+            const html = `
+                <div class="list-item slide-in" data-id="${id}">
+                    <div class="item-header">
+                        <span class="item-title">Formation</span>
+                        <button type="button" class="item-remove" onclick="removeItem('${id}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Diplôme</label>
+                            <input type="text" class="form-input" name="degree_${id}" placeholder="Master en Informatique">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Institution</label>
+                            <input type="text" class="form-input" name="institution_${id}" placeholder="Université Paris Sorbonne">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de début</label>
+                            <input type="month" class="form-input" name="startDate_${id}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date de fin</label>
+                            <input type="month" class="form-input" name="endDate_${id}">
+                        </div>
+                    </div>
+                </div>
+            `;
+            list.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addSkill() {
+            const list = document.getElementById('skillsList');
+            const id = 'skill_' + Date.now();
+            const html = `
+                <div class="list-item slide-in" data-id="${id}">
+                    <div class="item-header">
+                        <span class="item-title">Compétence</span>
+                        <button type="button" class="item-remove" onclick="removeItem('${id}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Nom de la compétence</label>
+                            <input type="text" class="form-input" name="skillName_${id}" placeholder="JavaScript">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Niveau</label>
+                            <select class="form-input" name="skillLevel_${id}">
+                                <option value="beginner">Débutant</option>
+                                <option value="intermediate">Intermédiaire</option>
+                                <option value="advanced">Avancé</option>
+                                <option value="expert">Expert</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `;
+            list.insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeItem(id) {
+            const item = document.querySelector(`[data-id="${id}"]`);
+            if (item) {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                setTimeout(() => item.remove(), 200);
+            }
+        }
+
+        // Collecte des données du formulaire
+        function collectFormData() {
+            const data = {
+                basics: {
+                    name: (document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value).trim(),
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    location: document.getElementById('location').value,
+                    website: document.getElementById('website').value,
+                    summary: document.getElementById('summary').value
+                },
+                experience: [],
+                education: [],
+                skills: []
+            };
+
+            // Collecte des expériences
+            document.querySelectorAll('#experienceList .list-item').forEach(item => {
+                const id = item.dataset.id;
+                data.experience.push({
+                    position: item.querySelector(`[name="position_${id}"]`).value,
+                    company: item.querySelector(`[name="company_${id}"]`).value,
+                    startDate: item.querySelector(`[name="startDate_${id}"]`).value,
+                    endDate: item.querySelector(`[name="endDate_${id}"]`).value,
+                    description: item.querySelector(`[name="description_${id}"]`).value
+                });
+            });
+
+            // Collecte des formations
+            document.querySelectorAll('#educationList .list-item').forEach(item => {
+                const id = item.dataset.id;
+                data.education.push({
+                    degree: item.querySelector(`[name="degree_${id}"]`).value,
+                    institution: item.querySelector(`[name="institution_${id}"]`).value,
+                    startDate: item.querySelector(`[name="startDate_${id}"]`).value,
+                    endDate: item.querySelector(`[name="endDate_${id}"]`).value
+                });
+            });
+
+            // Collecte des compétences
+            document.querySelectorAll('#skillsList .list-item').forEach(item => {
+                const id = item.dataset.id;
+                data.skills.push({
+                    name: item.querySelector(`[name="skillName_${id}"]`).value,
+                    level: item.querySelector(`[name="skillLevel_${id}"]`).value
+                });
+            });
+
+            return data;
+        }
+
+        // Génération du CV
+        async function generateCV() {
+            const formData = collectFormData();
+            
+            if (!formData.basics.name || !formData.basics.email) {
+                alert('Veuillez remplir au moins votre nom et email');
+                return;
+            }
+
+            // Afficher le loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('result').classList.remove('show');
+
+            try {
+                const response = await fetch('/api/resume', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: `CV - ${formData.basics.name}`,
+                        template: selectedTemplate,
+                        data: formData,
+                        visibility: 'public'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la génération du CV');
+                }
+
+                const result = await response.json();
+                generatedResumeId = result.id;
+
+                // Masquer le loading et afficher le résultat
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('result').classList.add('show');
+
+                // Mettre à jour les liens
+                document.getElementById('viewLink').href = `/public/${result.username}/${result.slug}`;
+                document.getElementById('downloadLink').href = `/api/resume/${result.id}/print`;
+                document.getElementById('editLink').href = `/builder/${result.id}`;
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la génération du CV. Veuillez réessayer.');
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        // Gestion de la prévisualisation
+        function initializePreview() {
+            const previewToggle = document.getElementById('previewToggle');
+            const previewPanel = document.getElementById('previewPanel');
+            const previewClose = document.getElementById('previewClose');
+
+            previewToggle.addEventListener('click', () => {
+                previewPanel.classList.toggle('open');
+                previewToggle.classList.toggle('hidden');
+                updatePreview();
+            });
+
+            previewClose.addEventListener('click', () => {
+                previewPanel.classList.remove('open');
+                previewToggle.classList.remove('hidden');
+            });
+
+            // Écouter les changements dans les formulaires
+            document.addEventListener('input', debounce(updatePreview, 300));
+            document.addEventListener('change', updatePreview);
+        }
+
+        function updatePreview() {
+            const formData = collectFormData();
+            
+            // Mettre à jour les informations de base
+            document.getElementById('preview-name').textContent = formData.basics.name || 'Votre nom';
+            document.getElementById('preview-email').textContent = formData.basics.email || 'email@example.com';
+            document.getElementById('preview-phone').textContent = formData.basics.phone || '+33 1 23 45 67 89';
+            document.getElementById('preview-location').textContent = formData.basics.location || 'Ville, Pays';
+            document.getElementById('preview-website').textContent = formData.basics.website || 'site-web.com';
+            document.getElementById('preview-summary').textContent = formData.basics.summary || 'Votre résumé professionnel apparaîtra ici...';
+
+            // Mettre à jour les expériences
+            updatePreviewExperience(formData.experience);
+            
+            // Mettre à jour la formation
+            updatePreviewEducation(formData.education);
+            
+            // Mettre à jour les compétences
+            updatePreviewSkills(formData.skills);
+
+            // Masquer les sections vides
+            togglePreviewSection('preview-summary-section', formData.basics.summary);
+            togglePreviewSection('preview-experience-section', formData.experience.length > 0);
+            togglePreviewSection('preview-education-section', formData.education.length > 0);
+            togglePreviewSection('preview-skills-section', formData.skills.length > 0);
+        }
+
+        function updatePreviewExperience(experiences) {
+            const container = document.getElementById('preview-experience');
+            container.innerHTML = '';
+
+            experiences.forEach(exp => {
+                if (!exp.position && !exp.company) return;
+
+                const expElement = document.createElement('div');
+                expElement.className = 'cv-item';
+                expElement.innerHTML = `
+                    <div class="cv-item-header">
+                        <div>
+                            <div class="cv-item-title">${exp.position || 'Poste'}</div>
+                            <div class="cv-item-subtitle">${exp.company || 'Entreprise'}</div>
+                        </div>
+                        <div class="cv-item-date">${formatDateRange(exp.startDate, exp.endDate)}</div>
+                    </div>
+                    ${exp.description ? `<div class="cv-item-description">${exp.description}</div>` : ''}
+                `;
+                container.appendChild(expElement);
+            });
+        }
+
+        function updatePreviewEducation(educations) {
+            const container = document.getElementById('preview-education');
+            container.innerHTML = '';
+
+            educations.forEach(edu => {
+                if (!edu.degree && !edu.institution) return;
+
+                const eduElement = document.createElement('div');
+                eduElement.className = 'cv-item';
+                eduElement.innerHTML = `
+                    <div class="cv-item-header">
+                        <div>
+                            <div class="cv-item-title">${edu.degree || 'Diplôme'}</div>
+                            <div class="cv-item-subtitle">${edu.institution || 'Institution'}</div>
+                        </div>
+                        <div class="cv-item-date">${formatDateRange(edu.startDate, edu.endDate)}</div>
+                    </div>
+                `;
+                container.appendChild(eduElement);
+            });
+        }
+
+        function updatePreviewSkills(skills) {
+            const container = document.getElementById('preview-skills');
+            container.innerHTML = '';
+
+            skills.forEach(skill => {
+                if (!skill.name) return;
+
+                const skillElement = document.createElement('div');
+                skillElement.className = 'cv-skill';
+                skillElement.innerHTML = `
+                    <span>${skill.name}</span>
+                    <span class="cv-skill-level">${getLevelLabel(skill.level)}</span>
+                `;
+                container.appendChild(skillElement);
+            });
+        }
+
+        function formatDateRange(startDate, endDate) {
+            if (!startDate) return '';
+            
+            const start = startDate ? new Date(startDate).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }) : '';
+            const end = endDate ? new Date(endDate).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }) : 'Présent';
+            
+            return `${start} - ${end}`;
+        }
+
+        function getLevelLabel(level) {
+            const levels = {
+                'beginner': 'Débutant',
+                'intermediate': 'Intermédiaire',
+                'advanced': 'Avancé',
+                'expert': 'Expert'
+            };
+            return levels[level] || level;
+        }
+
+        function togglePreviewSection(sectionId, show) {
+            const section = document.getElementById(sectionId);
+            section.style.display = show ? 'block' : 'none';
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Gestion du changement de langue
+        document.getElementById('languageSelect').addEventListener('change', function() {
+            if (window.i18n && window.i18n.setLanguage) {
+                window.i18n.setLanguage(this.value);
+            }
+        });
+
+        // AI Suggestions System
+        function generateAISuggestions() {
+            const btn = document.querySelector('.btn-ai');
+            const resultsDiv = document.getElementById('aiResults');
+            const suggestionsList = document.getElementById('aiSuggestionsList');
+            
+            // Show loading state
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyse en cours...';
+            btn.disabled = true;
+            
+            // Simulate AI analysis
+            setTimeout(() => {
+                const formData = collectFormData();
+                const suggestions = analyzeCV(formData);
+                
+                suggestionsList.innerHTML = '';
+                suggestions.forEach(suggestion => {
+                    const suggestionElement = document.createElement('div');
+                    suggestionElement.className = 'ai-suggestion-item slide-in';
+                    suggestionElement.innerHTML = `
+                        <div class="suggestion-type">${suggestion.type}</div>
+                        <div class="suggestion-text">${suggestion.text}</div>
+                    `;
+                    suggestionsList.appendChild(suggestionElement);
+                });
+                
+                resultsDiv.style.display = 'block';
+                resultsDiv.classList.add('fade-in');
+                
+                // Reset button
+                btn.innerHTML = '<i class="fas fa-magic"></i> Analyser mon CV';
+                btn.disabled = false;
+                
+                // Update analytics scores
+                updateAnalyticsScores(formData);
+            }, 2000);
+        }
+
+        function analyzeCV(formData) {
+            const suggestions = [];
+            
+            // Analyze completeness
+            if (!formData.basics.summary || formData.basics.summary.length < 50) {
+                suggestions.push({
+                    type: 'Résumé professionnel',
+                    text: 'Ajoutez un résumé professionnel de 2-3 phrases pour attirer l\'attention des recruteurs.'
+                });
+            }
+            
+            if (formData.experience.length < 2) {
+                suggestions.push({
+                    type: 'Expérience professionnelle',
+                    text: 'Ajoutez plus d\'expériences professionnelles pour renforcer votre profil.'
+                });
+            }
+            
+            if (formData.skills.length < 5) {
+                suggestions.push({
+                    type: 'Compétences',
+                    text: 'Listez plus de compétences techniques et soft skills pertinentes à votre domaine.'
+                });
+            }
+            
+            // Check for contact info
+            if (!formData.basics.phone) {
+                suggestions.push({
+                    type: 'Informations de contact',
+                    text: 'Ajoutez votre numéro de téléphone pour faciliter le contact.'
+                });
+            }
+            
+            // Check for keywords
+            const content = JSON.stringify(formData).toLowerCase();
+            if (!content.includes('gestion') && !content.includes('management') && !content.includes('leadership')) {
+                suggestions.push({
+                    type: 'Mots-clés',
+                    text: 'Intégrez des mots-clés comme "gestion", "leadership" ou "management" selon votre secteur.'
+                });
+            }
+            
+            if (suggestions.length === 0) {
+                suggestions.push({
+                    type: 'Excellent travail !',
+                    text: 'Votre CV semble bien structuré. Continuez à le personnaliser selon les offres d\'emploi.'
+                });
+            }
+            
+            return suggestions;
+        }
+
+        function updateAnalyticsScores(formData) {
+            // Calculate ATS score
+            let atsScore = 60;
+            if (formData.basics.summary) atsScore += 10;
+            if (formData.experience.length > 0) atsScore += 15;
+            if (formData.skills.length > 3) atsScore += 10;
+            if (formData.basics.phone) atsScore += 5;
+            
+            // Calculate completeness score
+            let completenessScore = 0;
+            const fields = [
+                formData.basics.name, formData.basics.email, formData.basics.phone,
+                formData.basics.location, formData.basics.summary
+            ];
+            completenessScore += (fields.filter(field => field && field.length > 0).length / fields.length) * 50;
+            completenessScore += Math.min(formData.experience.length * 15, 30);
+            completenessScore += Math.min(formData.skills.length * 4, 20);
+            
+            // Update display
+            document.getElementById('atsScore').textContent = Math.min(atsScore, 100);
+            document.getElementById('completenessScore').textContent = Math.min(Math.round(completenessScore), 100);
+            document.getElementById('readabilityScore').textContent = Math.min(85 + Math.random() * 10, 100).toFixed(0);
+            document.getElementById('keywordScore').textContent = Math.min(70 + Math.random() * 20, 100).toFixed(0);
+            
+            // Update final score
+            const finalScore = Math.round((atsScore + completenessScore + 85 + 75) / 4);
+            document.getElementById('finalScore').textContent = finalScore + '%';
+        }
+
+        // Color Customization
+        function initializeColorPicker() {
+            const colorInput = document.getElementById('primaryColor');
+            const colorPresets = document.querySelectorAll('.color-preset');
+            const fontSelect = document.getElementById('fontFamily');
+            
+            colorInput.addEventListener('change', (e) => {
+                updatePreviewColors(e.target.value);
+                updateColorPresets(e.target.value);
+            });
+            
+            colorPresets.forEach(preset => {
+                preset.addEventListener('click', () => {
+                    const color = preset.dataset.color;
+                    colorInput.value = color;
+                    updatePreviewColors(color);
+                    updateColorPresets(color);
+                });
+            });
+            
+            fontSelect.addEventListener('change', (e) => {
+                updatePreviewFont(e.target.value);
+            });
+        }
+
+        function updatePreviewColors(color) {
+            const root = document.documentElement;
+            root.style.setProperty('--primary', color);
+            
+            // Update preview CV colors
+            const previewElements = document.querySelectorAll('.cv-name, .cv-section-title, .cv-skill-level');
+            previewElements.forEach(el => {
+                el.style.color = color;
+            });
+        }
+
+        function updateColorPresets(selectedColor) {
+            const presets = document.querySelectorAll('.color-preset');
+            presets.forEach(preset => {
+                preset.classList.toggle('active', preset.dataset.color === selectedColor);
+            });
+        }
+
+        function updatePreviewFont(fontFamily) {
+            const previewCV = document.getElementById('previewCV');
+            previewCV.style.fontFamily = `'${fontFamily}', sans-serif`;
+        }
+
+        // Export Functions
+        function exportCV(format) {
+            const formData = collectFormData();
+            
+            switch (format) {
+                case 'pdf':
+                    exportToPDF(formData, true); // Premium quality
+                    break;
+                case 'word':
+                    exportToWord(formData);
+                    break;
+                case 'link':
+                    generateShareableLink(formData);
+                    break;
+                case 'json':
+                    exportToJSON(formData);
+                    break;
+            }
+        }
+
+        function exportToPDF(formData, premium = false) {
+            // Implementation for PDF export with premium options
+            console.log('Exporting to PDF...', { premium, formData });
+            alert('Export PDF ' + (premium ? 'Premium' : 'Standard') + ' en cours...');
+        }
+
+        function exportToWord(formData) {
+            // Implementation for Word export
+            console.log('Exporting to Word...', formData);
+            alert('Export Word en cours...');
+        }
+
+        function generateShareableLink(formData) {
+            // Generate shareable link
+            const shareId = 'cv_' + Date.now();
+            const shareUrl = `${window.location.origin}/shared/${shareId}`;
+            
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('Lien copié dans le presse-papier !\n' + shareUrl);
+            });
+        }
+
+        function exportToJSON(formData) {
+            // Export as JSON
+            const dataStr = JSON.stringify(formData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'cv-data.json';
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize advanced features
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... existing initialization code ...
+            
+            // Initialize color picker after other initializations
+            setTimeout(() => {
+                initializeColorPicker();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

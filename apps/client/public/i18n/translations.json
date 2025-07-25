@@ -1,0 +1,263 @@
+{
+  "fr": {
+    "nav": {
+      "about": "À propos",
+      "experience": "Expérience",
+      "education": "Formation",
+      "skills": "Compétences",
+      "contact": "Contact"
+    },
+    "sections": {
+      "about": {
+        "title": "À propos de moi",
+        "description": "Développeur passionné avec une forte expérience en développement web moderne."
+      },
+      "experience": {
+        "title": "Expérience professionnelle",
+        "position": "Poste",
+        "company": "Entreprise",
+        "location": "Lieu",
+        "duration": "Durée"
+      },
+      "education": {
+        "title": "Formation",
+        "degree": "Diplôme",
+        "institution": "Établissement",
+        "year": "Année"
+      },
+      "skills": {
+        "title": "Compétences",
+        "technical": "Compétences techniques",
+        "languages": "Langues"
+      },
+      "projects": {
+        "title": "Projets",
+        "description": "Description",
+        "technologies": "Technologies utilisées"
+      },
+      "contact": {
+        "title": "Contact",
+        "email": "Email",
+        "phone": "Téléphone",
+        "address": "Adresse",
+        "website": "Site web"
+      }
+    },
+    "common": {
+      "download": "Télécharger PDF",
+      "print": "Imprimer",
+      "language": "Langue",
+      "search": "Search...",
+      "close": "Close",
+      "save": "Save",
+      "cancel": "Cancel",
+      "loading": "Loading..."
+    },
+    "generator": {
+      "title": "Professional CV Generator",
+      "subtitle": "Créez votre CV parfait en quelques minutes avec notre générateur intelligent",
+      "tabs": {
+        "basics": "Informations de base",
+        "experience": "Expérience",
+        "education": "Formation",
+        "skills": "Compétences",
+        "generate": "Générer le CV"
+      },
+      "sections": {
+        "personal": "Informations personnelles",
+        "experience": "Expérience professionnelle",
+        "education": "Formation",
+        "skills": "Compétences",
+        "template": "Choisissez votre modèle"
+      },
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "email": "Email",
+        "phone": "Téléphone",
+        "location": "Ville",
+        "website": "Site web",
+        "summary": "Résumé professionnel",
+        "company": "Entreprise",
+        "position": "Poste",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
+        "description": "Description",
+        "institution": "Institution",
+        "degree": "Diplôme",
+        "skillName": "Nom de la compétence",
+        "skillLevel": "Niveau"
+      },
+      "levels": {
+        "beginner": "Débutant",
+        "intermediate": "Intermédiaire",
+        "advanced": "Avancé",
+        "expert": "Expert"
+      },
+      "buttons": {
+            "addExperience": "Ajouter une expérience",
+            "addEducation": "Ajouter une formation", 
+            "addSkill": "Ajouter une compétence",
+            "generate": "Générer mon CV",
+            "view": "Voir le CV",
+            "download": "Télécharger PDF",
+            "edit": "Modifier"
+          },
+          "sections": {
+            "ai": "Assistant IA",
+            "customization": "Personnalisation avancée",
+            "template": "Choisissez votre template",
+            "analytics": "Analyse de votre CV"
+          },
+      "theme": {
+        "toggle": "Changer de thème",
+        "light": "Mode clair",
+        "dark": "Mode sombre"
+      },
+      "templates": {
+        "modern": "Moderne et élégant",
+        "classic": "Classique et professionnel",
+        "creative": "Créatif et coloré"
+      },
+      "messages": {
+        "generating": "Génération de votre CV...",
+        "success": "CV généré avec succès !"
+      },
+      "preview": {
+        "title": "Aperçu en temps réel",
+        "toggle": "Basculer l'aperçu"
+      }
+    }
+  },
+  "en": {
+    "nav": {
+      "about": "About",
+      "experience": "Experience",
+      "education": "Education",
+      "skills": "Skills",
+      "projects": "Projects",
+      "contact": "Contact"
+    },
+    "sections": {
+      "about": {
+        "title": "About me",
+        "description": "Passionate developer with strong experience in modern web development."
+      },
+      "experience": {
+        "title": "Professional Experience",
+        "position": "Position",
+        "company": "Company",
+        "location": "Location",
+        "duration": "Duration"
+      },
+      "education": {
+        "title": "Education",
+        "degree": "Degree",
+        "institution": "Institution",
+        "year": "Year"
+      },
+      "skills": {
+        "title": "Skills",
+        "technical": "Technical Skills",
+        "languages": "Languages"
+      },
+      "projects": {
+        "title": "Projects",
+        "description": "Description",
+        "technologies": "Technologies used"
+      },
+      "contact": {
+        "title": "Contact",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "website": "Website"
+      }
+    },
+    "common": {
+      "download": "Download PDF",
+      "print": "Print",
+      "language": "Language",
+      "search": "Search...",
+      "close": "Close",
+      "save": "Save",
+      "cancel": "Cancel",
+      "loading": "Loading..."
+    },
+    "generator": {
+      "title": "Professional CV Generator",
+      "subtitle": "Create your perfect CV in minutes with our intelligent generator",
+      "tabs": {
+        "basics": "Basic Information",
+        "experience": "Experience",
+        "education": "Education",
+        "skills": "Skills",
+        "generate": "Generate CV"
+      },
+      "sections": {
+        "personal": "Personal Information",
+        "experience": "Professional Experience",
+        "education": "Education",
+        "skills": "Skills",
+        "template": "Choose your template"
+      },
+      "fields": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "location": "City",
+        "website": "Website",
+        "summary": "Professional Summary",
+        "company": "Company",
+        "position": "Position",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "description": "Description",
+        "institution": "Institution",
+        "degree": "Degree",
+        "skillName": "Skill Name",
+        "skillLevel": "Level"
+      },
+      "levels": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "expert": "Expert"
+      },
+      "buttons": {
+          "addExperience": "Add Experience",
+          "addEducation": "Add Education",
+          "addSkill": "Add Skill", 
+          "generate": "Generate my CV",
+          "view": "View CV",
+          "download": "Download PDF",
+          "edit": "Edit"
+        },
+        "sections": {
+          "ai": "AI Assistant",
+          "customization": "Advanced Customization",
+          "template": "Choose your template",
+          "analytics": "CV Analysis"
+        },
+      "theme": {
+        "toggle": "Toggle theme",
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+      },
+      "templates": {
+        "modern": "Modern and elegant",
+        "classic": "Classic and professional",
+        "creative": "Creative and colorful"
+      },
+      "messages": {
+        "generating": "Generating your CV...",
+        "success": "CV generated successfully!"
+      },
+      "preview": {
+        "title": "Real-time Preview",
+        "toggle": "Toggle preview"
+      }
+    }
+  }
+}

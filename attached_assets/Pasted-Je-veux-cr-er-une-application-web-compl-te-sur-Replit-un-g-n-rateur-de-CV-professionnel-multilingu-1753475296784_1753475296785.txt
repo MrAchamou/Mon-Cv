@@ -1,0 +1,39 @@
+Je veux créer une application web complète sur Replit : un générateur de CV professionnel multilingue.
+
+Voici les spécifications détaillées :
+
+1. Structure Générale :
+- Crée un projet avec une séparation claire entre le frontend (interface utilisateur) et la logique backend (traitement des données).
+- Utilise uniquement HTML, CSS et JavaScript (pas de framework complexe, mais tu peux utiliser une structure modulaire JS si nécessaire).
+- Le projet doit être compatible avec l'hébergement Replit, sans serveur externe.
+
+2. Fonctionnalités principales :
+- Interface utilisateur propre et responsive.
+- Formulaire interactif pour renseigner : nom, email, numéro, titre du poste, résumé personnel, expériences professionnelles, formations, compétences, langues parlées, centres d’intérêt.
+- L’utilisateur peut sélectionner la langue de l’interface parmi : français, anglais, espagnol, allemand, arabe, portugais, italien.
+- La langue sélectionnée adapte tous les textes de l’interface (boutons, titres, champs, etc.) via un système simple de fichiers JSON (localisation i18n).
+- Chaque fois qu’un utilisateur remplit un champ, le contenu est injecté dynamiquement dans un aperçu du CV en temps réel (style propre, professionnel).
+- Le CV final peut être exporté :
+    - En HTML téléchargeable.
+    - En PDF si possible (utilise `html2pdf.js` ou une méthode simple JS côté client).
+- L’utilisateur peut choisir un des 3 modèles (thèmes) de mise en page du CV via un sélecteur.
+- Les données de l’utilisateur sont temporairement stockées (dans le navigateur via `localStorage`, ou Replit DB si besoin).
+- (Optionnel mais souhaité) Ajouter un bouton "Traduire automatiquement mon contenu" pour générer une version traduite du CV dans une autre langue sélectionnée (tu peux utiliser un script simulé pour l’instant ou me guider vers une API gratuite).
+
+3. Fichiers attendus :
+- `index.html` : structure principale de la page avec balises dynamiques et formulaire.
+- `style.css` : design clair, professionnel, et adaptable.
+- `app.js` : logique JS complète : gestion du formulaire, traduction de l’interface, prévisualisation dynamique du CV, export.
+- `lang/fr.json`, `lang/en.json`, `lang/es.json`, etc. : fichiers de traduction i18n contenant les textes de l’interface.
+- `themes/` : contient au moins 3 variantes CSS ou fichiers HTML/CSS pour différents styles de CV.
+
+4. Objectifs UX/UI :
+- Interface simple, fluide et moderne.
+- Aucune étape inutile pour l’utilisateur.
+- Responsive design (fonctionne bien sur mobile et desktop).
+- Instructions claires sur chaque champ du formulaire.
+- Design des CV : épuré, pro, moderne (exemple : style LinkedIn, Canva, ou CV template Google Docs).
+
+Donne-moi d’abord la structure complète du projet (arborescence des fichiers et explication de leur rôle), puis construis l’interface de base (langue sélectionnable + formulaire + aperçu live), et ajoute le reste progressivement.
+
+À chaque étape, explique-moi ce que tu fais et comment je peux modifier ou ajouter des choses moi-même par la suite.
