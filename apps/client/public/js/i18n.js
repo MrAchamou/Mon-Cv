@@ -1,174 +1,201 @@
-class I18n {
-  constructor() {
-    this.translations = {};
-    this.supportedLanguages = ['fr', 'en'];
-    this.currentLanguage = this.detectLanguage();
-    this.isInitialized = false;
-    this.initCallbacks = [];
-    this.init();
-  }
 
-  async init() {
-    try {
-      const response = await fetch('./i18n/translations.json');
-      this.translations = await response.json();
-      console.log('Translations loaded:', this.translations);
-      this.isInitialized = true;
-      this.translatePage();
-
-      // Execute all pending callbacks
-      this.initCallbacks.forEach(callback => callback());
-      this.initCallbacks = [];
-    } catch (error) {
-      console.error('Error loading translations:', error);
-    }
-  }
-
-  onInitialized(callback) {
-    if (this.isInitialized) {
-      callback();
-    } else {
-      this.initCallbacks.push(callback);
-    }
-  }
-
-  detectLanguage() {
-    // Vérifier le localStorage d'abord
-    const savedLang = localStorage.getItem('cv-language');
-    if (savedLang && this.supportedLanguages.includes(savedLang)) {
-      return savedLang;
+// Système d'internationalisation pour le générateur de CV
+class I18nSystem {
+    constructor() {
+        this.currentLanguage = 'fr';
+        this.translations = {};
+        this.callbacks = [];
+        this.loadTranslations();
     }
 
-    // Détecter la langue du navigateur
-    const browserLang = navigator.language.slice(0, 2);
-    return this.supportedLanguages.includes(browserLang) ? browserLang : 'en';
-  }
-
-  createLanguageSelector() {
-    // Créer le sélecteur de langue
-    const languageSelector = document.createElement('div');
-    languageSelector.className = 'language-selector';
-    languageSelector.innerHTML = `
-      <select id="language-select" class="language-select">
-        <option value="fr" ${this.currentLanguage === 'fr' ? 'selected' : ''}>🇫🇷 Français</option>
-        <option value="en" ${this.currentLanguage === 'en' ? 'selected' : ''}>🇬🇧 English</option>
-      </select>
-    `;
-
-    // Ajouter les styles
-    const style = document.createElement('style');
-    style.textContent = `
-      .language-selector {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-      }
-
-      .language-select {
-        padding: 8px 12px;
-        border: 2px solid #333;
-        border-radius: 6px;
-        background: white;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-      }
-
-      .language-select:hover {
-        border-color: #007bff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      }
-
-      .language-select:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
-      }
-
-      @media (max-width: 768px) {
-        .language-selector {
-          top: 10px;
-          right: 10px;
+    async loadTranslations() {
+        try {
+            const response = await fetch('./i18n/translations.json');
+            const data = await response.json();
+            this.translations = data;
+            console.log('Translations loaded:', this.translations);
+            this.notifyCallbacks();
+        } catch (error) {
+            console.error('Error loading translations:', error);
+            // Fallback translations
+            this.translations = {
+                fr: {
+                    generator: {
+                        title: "Générateur de CV Professionnel",
+                        subtitle: "Créez votre CV parfait en quelques minutes",
+                        builderTitle: "Créateur de CV Intelligent",
+                        builderSubtitle: "Suivez les étapes pour créer votre CV parfait",
+                        tabs: {
+                            basics: "Informations de base",
+                            experience: "Expérience",
+                            education: "Formation",
+                            skills: "Compétences",
+                            generate: "Générer"
+                        },
+                        sections: {
+                            personal: "Informations personnelles",
+                            experience: "Expérience professionnelle",
+                            education: "Formation",
+                            skills: "Compétences",
+                            ai: "Assistant IA",
+                            customization: "Personnalisation avancée",
+                            template: "Choisissez votre template"
+                        },
+                        fields: {
+                            firstName: "Prénom",
+                            lastName: "Nom",
+                            email: "Email",
+                            phone: "Téléphone",
+                            location: "Ville",
+                            website: "Site web",
+                            summary: "Résumé professionnel"
+                        },
+                        buttons: {
+                            addExperience: "Ajouter une expérience",
+                            addEducation: "Ajouter une formation",
+                            addSkill: "Ajouter une compétence",
+                            generate: "Générer mon CV",
+                            view: "Voir le CV",
+                            download: "Télécharger PDF",
+                            edit: "Modifier"
+                        },
+                        messages: {
+                            generating: "Génération de votre CV en cours...",
+                            success: "CV généré avec succès!"
+                        },
+                        templates: {
+                            modern: "Moderne et élégant",
+                            classic: "Classique et professionnel",
+                            creative: "Créatif et coloré"
+                        }
+                    },
+                    preview: {
+                        title: "Aperçu en temps réel"
+                    }
+                },
+                en: {
+                    generator: {
+                        title: "Professional CV Generator",
+                        subtitle: "Create your perfect CV in minutes",
+                        builderTitle: "Intelligent CV Builder",
+                        builderSubtitle: "Follow the steps to create your perfect CV",
+                        tabs: {
+                            basics: "Basic Information",
+                            experience: "Experience",
+                            education: "Education",
+                            skills: "Skills",
+                            generate: "Generate"
+                        },
+                        sections: {
+                            personal: "Personal Information",
+                            experience: "Professional Experience",
+                            education: "Education",
+                            skills: "Skills",
+                            ai: "AI Assistant",
+                            customization: "Advanced Customization",
+                            template: "Choose your template"
+                        },
+                        fields: {
+                            firstName: "First Name",
+                            lastName: "Last Name",
+                            email: "Email",
+                            phone: "Phone",
+                            location: "City",
+                            website: "Website",
+                            summary: "Professional Summary"
+                        },
+                        buttons: {
+                            addExperience: "Add Experience",
+                            addEducation: "Add Education",
+                            addSkill: "Add Skill",
+                            generate: "Generate my CV",
+                            view: "View CV",
+                            download: "Download PDF",
+                            edit: "Edit"
+                        },
+                        messages: {
+                            generating: "Generating your CV...",
+                            success: "CV generated successfully!"
+                        },
+                        templates: {
+                            modern: "Modern and elegant",
+                            classic: "Classic and professional",
+                            creative: "Creative and colorful"
+                        }
+                    },
+                    preview: {
+                        title: "Real-time Preview"
+                    }
+                }
+            };
+            this.notifyCallbacks();
         }
-
-        .language-select {
-          padding: 6px 10px;
-          font-size: 12px;
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-    document.body.appendChild(languageSelector);
-
-    // Ajouter l'événement de changement de langue
-    document.getElementById('language-select').addEventListener('change', (e) => {
-      this.changeLanguage(e.target.value);
-    });
-  }
-
-  changeLanguage(lang) {
-    this.currentLanguage = lang;
-    localStorage.setItem('cv-language', lang);
-    this.translatePage();
-  }
-
-  translatePage() {
-    const elements = document.querySelectorAll('[data-i18n]');
-    elements.forEach(element => {
-      const key = element.getAttribute('data-i18n');
-      const translation = this.getTranslation(key);
-      if (translation) {
-        element.textContent = translation;
-      }
-    });
-
-    // Traduire les placeholders
-    const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
-    placeholderElements.forEach(element => {
-      const key = element.getAttribute('data-i18n-placeholder');
-      const translation = this.getTranslation(key);
-      if (translation) {
-        element.placeholder = translation;
-      }
-    });
-
-    // Traduire les attributs title
-    const titleElements = document.querySelectorAll('[data-i18n-title]');
-    titleElements.forEach(element => {
-      const key = element.getAttribute('data-i18n-title');
-      const translation = this.getTranslation(key);
-      if (translation) {
-        element.title = translation;
-      }
-    });
-  }
-
-  getTranslation(key) {
-    const keys = key.split('.');
-    let translation = this.translations[this.currentLanguage];
-
-    for (const k of keys) {
-      if (translation && translation[k]) {
-        translation = translation[k];
-      } else {
-        console.warn(`Translation not found for key: ${key}`);
-        return key;
-      }
     }
 
-    return translation;
-  }
+    setLanguage(lang) {
+        this.currentLanguage = lang;
+        this.translatePage();
+        localStorage.setItem('language', lang);
+    }
 
-  // Méthode utilitaire pour traduire dynamiquement du contenu
-  t(key) {
-    return this.getTranslation(key);
-  }
+    getTranslation(key) {
+        const keys = key.split('.');
+        let value = this.translations[this.currentLanguage];
+        
+        for (const k of keys) {
+            if (value && typeof value === 'object' && k in value) {
+                value = value[k];
+            } else {
+                console.warn(`Translation not found for key: ${key}`);
+                return key;
+            }
+        }
+        
+        return value || key;
+    }
+
+    translatePage() {
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const translation = this.getTranslation(key);
+            
+            if (element.tagName === 'INPUT' && element.type === 'submit') {
+                element.value = translation;
+            } else if (element.hasAttribute('placeholder')) {
+                element.placeholder = translation;
+            } else {
+                element.textContent = translation;
+            }
+        });
+    }
+
+    onInitialized(callback) {
+        if (this.translations && Object.keys(this.translations).length > 0) {
+            callback();
+        } else {
+            this.callbacks.push(callback);
+        }
+    }
+
+    notifyCallbacks() {
+        this.callbacks.forEach(callback => callback());
+        this.callbacks = [];
+    }
 }
 
-// Initialiser l'internationalisation quand le DOM est prêt
+// Initialize i18n system
+window.i18n = new I18nSystem();
+
+// Auto-translate when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  window.i18n = new I18n();
+    // Load saved language
+    const savedLang = localStorage.getItem('language') || 'fr';
+    window.i18n.setLanguage(savedLang);
+    
+    // Set language selector
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.value = savedLang;
+    }
 });

@@ -17,7 +17,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd apps/client/public && npm install && npm start"
+args = "cd apps/client/public && PORT=3001 node server.js"
 
 [[ports]]
 localPort = 5000

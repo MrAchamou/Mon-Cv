@@ -109,6 +109,30 @@
             "template": "Choisissez votre template",
             "analytics": "Analyse de votre CV"
           },
+          "builderTitle": "Créateur de CV Intelligent",
+          "builderSubtitle": "Suivez les étapes pour créer votre CV parfait",
+          "templates": {
+            "modern": "Moderne et élégant",
+            "classic": "Classique et professionnel",
+            "creative": "Créatif et coloré"
+          },
+          "messages": {
+            "generating": "Génération de votre CV en cours...",
+            "success": "CV généré avec succès!"
+          }
+        },
+        "preview": {
+          "title": "Aperçu en temps réel"er mon CV",
+            "view": "Voir le CV",
+            "download": "Télécharger PDF",
+            "edit": "Modifier"
+          },
+          "sections": {
+            "ai": "Assistant IA",
+            "customization": "Personnalisation avancée",
+            "template": "Choisissez votre template",
+            "analytics": "Analyse de votre CV"
+          },
       "theme": {
         "toggle": "Changer de thème",
         "light": "Mode clair",

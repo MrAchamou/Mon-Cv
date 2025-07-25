@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 3001;
 
 // Servir les fichiers statiques
 app.use(express.static(__dirname));
@@ -37,4 +37,10 @@ app.post('/api/resume', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🌟 CV Template Server running on http://0.0.0.0:${PORT}`);
   console.log(`📄 Access your multilingual CV at: http://0.0.0.0:${PORT}`);
+  console.log(`✨ Features available:`);
+  console.log(`   • PDF/DOCX Export`);
+  console.log(`   • Real-time Preview`);
+  console.log(`   • AI Suggestions`);
+  console.log(`   • Multiple Templates`);
+  console.log(`   • Multilingual Support (FR/EN)`);
 });

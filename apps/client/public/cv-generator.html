@@ -1914,13 +1914,14 @@
                         </div>
                     </div>
                 </div>
-            </div>iv>
+            </div>
         </div>
     </div>
 
     <!-- Bibliothèques pour l'export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docx@8.2.2/build/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/docx@8.2.2/build/index.min.js" crossorigin="anonymous"></script>
     
     <!-- Scripts -->
     <script src="./js/i18n.js"></script>
@@ -2515,7 +2516,7 @@
                 });
             }
             
-            if (formData.skills.length < 5) {) {
+            if (formData.skills.length < 5) {
                 suggestions.push({
                     type: 'Compétences',
                     text: 'Listez plus de compétences techniques et soft skills pertinentes à votre domaine.'
@@ -2571,9 +2572,6 @@
             
             if (atsElement) atsElement.textContent = Math.min(100, atsScore) + '%';
             if (completenessElement) completenessElement.textContent = Math.min(100, completenessScore) + '%';
-        } (formData.experience.length > 0) atsScore += 15;
-            if (formData.skills.length > 3) atsScore += 10;
-            if (formData.basics.phone) atsScore += 5;
             
             // Calculate completeness score
             let completenessScore = 0;
