@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1010,7 +1009,8 @@
         .ai-suggestions-panel {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
             border-radius: var(--radius-lg);
-            padding: 2rem;
+            ```text
+    padding: 2rem;
             border: 2px solid rgba(59, 130, 246, 0.2);
             margin-bottom: 2rem;
         }
@@ -1478,7 +1478,7 @@
                 <p class="hero-subtitle fade-in" data-i18n="generator.subtitle">
                     Créez votre CV parfait en quelques minutes avec notre générateur intelligent et moderne
                 </p>
-                
+
                 <!-- Stats -->
                 <div class="stats-grid fade-in">
                     <div class="stat-card">
@@ -1768,7 +1768,7 @@
                                 <h3 data-i18n="generator.messages.success">✅ CV généré avec succès !</h3>
                                 <p>Votre CV professionnel est prêt à être utilisé avec un score d'optimisation de <span id="finalScore">85%</span>.</p>
                             </div>
-                            
+
                             <!-- Advanced Export Options -->
                             <div class="export-options">
                                 <div class="export-card" onclick="exportCV('pdf')">
@@ -1922,7 +1922,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/docx@8.2.2/build/index.min.js" crossorigin="anonymous"></script>
-    
+
     <!-- Scripts -->
     <script src="./js/i18n.js"></script>
     <script>
@@ -1937,7 +1937,7 @@
             try {
                 const savedTheme = localStorage.getItem('theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
+
                 if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                     document.documentElement.classList.add('dark');
                 } else {
@@ -1951,7 +1951,7 @@
         // Toggle theme
         function toggleTheme() {
             const isDark = document.documentElement.classList.contains('dark');
-            
+
             if (isDark) {
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
@@ -1965,7 +1965,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Initialiser le thème en premier
             initializeTheme();
-            
+
             // Ajouter l'event listener pour le toggle de thème
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
@@ -1999,7 +1999,7 @@
             initializePreview();
             updateProgress();
             updateButtons();
-            
+
             // Ajouter des éléments par défaut
             addExperience();
             addEducation();
@@ -2024,14 +2024,14 @@
 
         function switchTab(index) {
             if (index < 0 || index >= tabs.length) return;
-            
+
             currentTab = index;
-            
+
             // Mettre à jour les boutons d'onglets
             document.querySelectorAll('.nav-tab').forEach((btn, i) => {
                 btn.classList.toggle('active', i === index);
             });
-            
+
             // Mettre à jour le contenu
             document.querySelectorAll('.tab-content').forEach((content, i) => {
                 content.classList.toggle('active', i === index);
@@ -2039,7 +2039,7 @@
                     content.classList.add('fade-in');
                 }
             });
-            
+
             updateProgress();
             updateButtons();
         }
@@ -2065,9 +2065,9 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const generateBtn = document.getElementById('generateBtn');
-            
+
             prevBtn.style.display = currentTab === 0 ? 'none' : 'flex';
-            
+
             if (currentTab === tabs.length - 1) {
                 nextBtn.style.display = 'none';
                 generateBtn.style.display = 'flex';
@@ -2259,7 +2259,7 @@
         // Génération du CV
         async function generateCV() {
             const formData = collectFormData();
-            
+
             if (!formData.basics.name || !formData.basics.email) {
                 alert('Veuillez remplir au moins votre nom et email');
                 return;
@@ -2330,7 +2330,7 @@
 
         function updatePreview() {
             const formData = collectFormData();
-            
+
             // Mettre à jour les informations de base
             document.getElementById('preview-name').textContent = formData.basics.name || 'Votre nom';
             document.getElementById('preview-email').textContent = formData.basics.email || 'email@example.com';
@@ -2341,10 +2341,10 @@
 
             // Mettre à jour les expériences
             updatePreviewExperience(formData.experience);
-            
+
             // Mettre à jour la formation
             updatePreviewEducation(formData.education);
-            
+
             // Mettre à jour les compétences
             updatePreviewSkills(formData.skills);
 
@@ -2419,10 +2419,10 @@
 
         function formatDateRange(startDate, endDate) {
             if (!startDate) return '';
-            
+
             const start = startDate ? new Date(startDate).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }) : '';
             const end = endDate ? new Date(endDate).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }) : 'Présent';
-            
+
             return `${start} - ${end}`;
         }
 
@@ -2465,16 +2465,16 @@
             const btn = document.querySelector('.btn-ai');
             const resultsDiv = document.getElementById('aiResults');
             const suggestionsList = document.getElementById('aiSuggestionsList');
-            
+
             // Show loading state
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyse en cours...';
             btn.disabled = true;
-            
+
             // Simulate AI analysis
             setTimeout(() => {
                 const formData = collectFormData();
                 const suggestions = analyzeCV(formData);
-                
+
                 suggestionsList.innerHTML = '';
                 suggestions.forEach(suggestion => {
                     const suggestionElement = document.createElement('div');
@@ -2485,14 +2485,14 @@
                     `;
                     suggestionsList.appendChild(suggestionElement);
                 });
-                
+
                 resultsDiv.style.display = 'block';
                 resultsDiv.classList.add('fade-in');
-                
+
                 // Reset button
                 btn.innerHTML = '<i class="fas fa-magic"></i> Analyser mon CV';
                 btn.disabled = false;
-                
+
                 // Update analytics scores
                 updateAnalyticsScores(formData);
             }, 2000);
@@ -2500,7 +2500,7 @@
 
         function analyzeCV(formData) {
             const suggestions = [];
-            
+
             // Analyze completeness
             if (!formData.basics.summary || formData.basics.summary.length < 50) {
                 suggestions.push({
@@ -2508,21 +2508,21 @@
                     text: 'Ajoutez un résumé professionnel de 2-3 phrases pour attirer l\'attention des recruteurs.'
                 });
             }
-            
+
             if (formData.experience.length < 2) {
                 suggestions.push({
                     type: 'Expérience professionnelle',
                     text: 'Ajoutez plus d\'expériences professionnelles pour renforcer votre profil.'
                 });
             }
-            
+
             if (formData.skills.length < 5) {
                 suggestions.push({
                     type: 'Compétences',
                     text: 'Listez plus de compétences techniques et soft skills pertinentes à votre domaine.'
                 });
             }
-            
+
             // Check for contact info
             if (!formData.basics.phone) {
                 suggestions.push({
@@ -2530,7 +2530,7 @@
                     text: 'Ajoutez votre numéro de téléphone pour faciliter le contact.'
                 });
             }
-            
+
             // Check for keywords
             const content = JSON.stringify(formData).toLowerCase();
             if (!content.includes('gestion') && !content.includes('management') && !content.includes('leadership')) {
@@ -2539,14 +2539,14 @@
                     text: 'Intégrez des mots-clés comme "gestion", "leadership" ou "management" selon votre secteur.'
                 });
             }
-            
+
             if (suggestions.length === 0) {
                 suggestions.push({
                     type: 'Excellent travail !',
                     text: 'Votre CV semble bien structuré. Continuez à le personnaliser selon les offres d\'emploi.'
                 });
             }
-            
+
             return suggestions;
         }
 
@@ -2557,7 +2557,7 @@
             if (formData.experience.length >= 2) atsScore += 15;
             if (formData.skills.length >= 5) atsScore += 10;
             if (formData.basics.phone) atsScore += 5;
-            
+
             // Calculate completeness score
             let completenessScore = 50;
             if (formData.basics.name) completenessScore += 10;
@@ -2565,33 +2565,17 @@
             if (formData.basics.summary) completenessScore += 10;
             if (formData.experience.length > 0) completenessScore += 10;
             if (formData.skills.length > 0) completenessScore += 10;
-            
-            // Update UI elements (assuming these elements exist)
-            const atsElement = document.getElementById('ats-score');
-            const completenessElement = document.getElementById('completeness-score');
-            
-            if (atsElement) atsElement.textContent = Math.min(100, atsScore) + '%';
-            if (completenessElement) completenessElement.textContent = Math.min(100, completenessScore) + '%';
-            
-            // Calculate completeness score
-            let completenessScore = 0;
-            const fields = [
-                formData.basics.name, formData.basics.email, formData.basics.phone,
-                formData.basics.location, formData.basics.summary
-            ];
-            completenessScore += (fields.filter(field => field && field.length > 0).length / fields.length) * 50;
-            completenessScore += Math.min(formData.experience.length * 15, 30);
-            completenessScore += Math.min(formData.skills.length * 4, 20);
-            
-            // Update display
-            document.getElementById('atsScore').textContent = Math.min(atsScore, 100);
-            document.getElementById('completenessScore').textContent = Math.min(Math.round(completenessScore), 100);
-            document.getElementById('readabilityScore').textContent = Math.min(85 + Math.random() * 10, 100).toFixed(0);
-            document.getElementById('keywordScore').textContent = Math.min(70 + Math.random() * 20, 100).toFixed(0);
-            
-            // Update final score
-            const finalScore = Math.round((atsScore + completenessScore + 85 + 75) / 4);
-            document.getElementById('finalScore').textContent = finalScore + '%';
+
+            // Update UI elements
+            const atsElement = document.getElementById('atsScore');
+            const completenessElement = document.getElementById('completenessScore');
+            const readabilityElement = document.getElementById('readabilityScore');
+            const keywordElement = document.getElementById('keywordScore');
+
+            if (atsElement) atsElement.textContent = Math.min(100, atsScore);
+            if (completenessElement) completenessElement.textContent = Math.min(100, completenessScore);
+            if (readabilityElement) readabilityElement.textContent = '88';
+            if (keywordElement) keywordElement.textContent = '76';
         }
 
         // Color Customization
@@ -2599,12 +2583,12 @@
             const colorInput = document.getElementById('primaryColor');
             const colorPresets = document.querySelectorAll('.color-preset');
             const fontSelect = document.getElementById('fontFamily');
-            
+
             colorInput.addEventListener('change', (e) => {
                 updatePreviewColors(e.target.value);
                 updateColorPresets(e.target.value);
             });
-            
+
             colorPresets.forEach(preset => {
                 preset.addEventListener('click', () => {
                     const color = preset.dataset.color;
@@ -2613,7 +2597,7 @@
                     updateColorPresets(color);
                 });
             });
-            
+
             fontSelect.addEventListener('change', (e) => {
                 updatePreviewFont(e.target.value);
             });
@@ -2622,7 +2606,7 @@
         function updatePreviewColors(color) {
             const root = document.documentElement;
             root.style.setProperty('--primary', color);
-            
+
             // Update preview CV colors
             const previewElements = document.querySelectorAll('.cv-name, .cv-section-title, .cv-skill-level');
             previewElements.forEach(el => {
@@ -2645,7 +2629,7 @@
         // Export Functions
         function exportCV(format) {
             const formData = collectFormData();
-            
+
             switch (format) {
                 case 'pdf':
                     exportToPDF(formData, true); // Premium quality
@@ -2665,14 +2649,14 @@
         // Quick download functions
         function quickDownload(format) {
             const formData = collectFormData();
-            
+
             if (!formData.basics.name || !formData.basics.email) {
                 alert('Veuillez remplir au moins votre nom et email avant de télécharger.');
                 return;
             }
-            
+
             showDownloadProgress(format);
-            
+
             switch (format) {
                 case 'pdf':
                     exportToPDF(formData, true);
@@ -2686,7 +2670,7 @@
         function showDownloadProgress(format) {
             const overlay = document.createElement('div');
             overlay.className = 'download-overlay show';
-            
+
             const progress = document.createElement('div');
             progress.className = 'download-progress show';
             progress.innerHTML = `
@@ -2695,10 +2679,10 @@
                 <p>Préparation du fichier ${format.toUpperCase()}...</p>
                 <small>Veuillez patienter quelques instants</small>
             `;
-            
+
             document.body.appendChild(overlay);
             document.body.appendChild(progress);
-            
+
             // Simuler le temps de génération
             setTimeout(() => {
                 hideDownloadProgress(overlay, progress);
@@ -2712,11 +2696,11 @@
 
         function exportToPDF(formData, premium = false) {
             console.log('Exporting to PDF...', { premium, formData });
-            
+
             // Simulation de génération PDF avec bibliothèque jsPDF
             try {
                 const { jsPDF } = window.jspdf || {};
-                
+
                 if (typeof jsPDF !== 'undefined') {
                     generatePDFWithLibrary(formData);
                 } else {
@@ -2731,33 +2715,33 @@
         function generatePDFWithLibrary(formData) {
             // Utilisation de jsPDF si disponible
             const doc = new jsPDF();
-            
+
             // Configuration du document
             doc.setFont('helvetica');
             doc.setFontSize(20);
-            
+
             // Titre
             doc.text(formData.basics.name || 'Curriculum Vitae', 20, 30);
-            
+
             // Informations de contact
             doc.setFontSize(12);
             let yPos = 50;
-            
+
             if (formData.basics.email) {
                 doc.text(`Email: ${formData.basics.email}`, 20, yPos);
                 yPos += 10;
             }
-            
+
             if (formData.basics.phone) {
                 doc.text(`Téléphone: ${formData.basics.phone}`, 20, yPos);
                 yPos += 10;
             }
-            
+
             if (formData.basics.location) {
                 doc.text(`Localisation: ${formData.basics.location}`, 20, yPos);
                 yPos += 15;
             }
-            
+
             // Résumé professionnel
             if (formData.basics.summary) {
                 doc.setFontSize(14);
@@ -2768,29 +2752,29 @@
                 doc.text(summaryLines, 20, yPos);
                 yPos += summaryLines.length * 5 + 10;
             }
-            
+
             // Expériences
             if (formData.experience.length > 0) {
                 doc.setFontSize(14);
                 doc.text('Expérience Professionnelle', 20, yPos);
                 yPos += 10;
-                
+
                 formData.experience.forEach(exp => {
                     if (yPos > 250) {
                         doc.addPage();
                         yPos = 30;
                     }
-                    
+
                     doc.setFontSize(12);
                     doc.text(`${exp.position} - ${exp.company}`, 20, yPos);
                     yPos += 8;
-                    
+
                     if (exp.startDate || exp.endDate) {
                         doc.setFontSize(10);
                         doc.text(`${exp.startDate || ''} - ${exp.endDate || 'Présent'}`, 20, yPos);
                         yPos += 6;
                     }
-                    
+
                     if (exp.description) {
                         doc.setFontSize(9);
                         const descLines = doc.splitTextToSize(exp.description, 170);
@@ -2799,11 +2783,11 @@
                     }
                 });
             }
-            
+
             // Télécharger le PDF
             const fileName = `CV_${formData.basics.name.replace(/\s+/g, '_')}_${new Date().getFullYear()}.pdf`;
             doc.save(fileName);
-            
+
             showSuccessMessage('PDF généré avec succès !');
         }
 
@@ -2811,28 +2795,28 @@
             // Simulation de génération PDF sans bibliothèque
             const content = generateCVContent(formData);
             const fileName = `CV_${formData.basics.name.replace(/\s+/g, '_')}_${new Date().getFullYear()}.pdf`;
-            
+
             // Créer un blob avec le contenu (simulation)
             const blob = new Blob([content], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
-            
+
             // Créer un lien de téléchargement
             const link = document.createElement('a');
             link.href = url;
             link.download = fileName;
             link.style.display = 'none';
-            
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             URL.revokeObjectURL(url);
             showSuccessMessage('CV PDF téléchargé avec succès !');
         }
 
         function exportToDocx(formData) {
             console.log('Exporting to DOCX...', formData);
-            
+
             try {
                 // Vérifier si docx est disponible
                 if (typeof docx !== 'undefined') {
@@ -2849,9 +2833,9 @@
         function generateDocxWithLibrary(formData) {
             // Utilisation de la bibliothèque docx si disponible
             const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docx;
-            
+
             const children = [];
-            
+
             // Titre principal
             children.push(
                 new Paragraph({
@@ -2859,19 +2843,19 @@
                     heading: HeadingLevel.TITLE,
                 })
             );
-            
+
             // Informations de contact
             const contactInfo = [];
             if (formData.basics.email) contactInfo.push(`Email: ${formData.basics.email}`);
             if (formData.basics.phone) contactInfo.push(`Téléphone: ${formData.basics.phone}`);
             if (formData.basics.location) contactInfo.push(`Localisation: ${formData.basics.location}`);
-            
+
             children.push(
                 new Paragraph({
                     children: [new TextRun(contactInfo.join(' | '))],
                 })
             );
-            
+
             // Résumé professionnel
             if (formData.basics.summary) {
                 children.push(
@@ -2886,7 +2870,7 @@
                     })
                 );
             }
-            
+
             // Expériences
             if (formData.experience.length > 0) {
                 children.push(
@@ -2895,7 +2879,7 @@
                         heading: HeadingLevel.HEADING_1,
                     })
                 );
-                
+
                 formData.experience.forEach(exp => {
                     children.push(
                         new Paragraph({
@@ -2907,7 +2891,7 @@
                             ],
                         })
                     );
-                    
+
                     if (exp.startDate || exp.endDate) {
                         children.push(
                             new Paragraph({
@@ -2920,7 +2904,7 @@
                             })
                         );
                     }
-                    
+
                     if (exp.description) {
                         children.push(
                             new Paragraph({
@@ -2930,7 +2914,7 @@
                     }
                 });
             }
-            
+
             // Compétences
             if (formData.skills.length > 0) {
                 children.push(
@@ -2939,25 +2923,25 @@
                         heading: HeadingLevel.HEADING_1,
                     })
                 );
-                
+
                 const skillsText = formData.skills
                     .map(skill => `${skill.name} (${getLevelLabel(skill.level)})`)
                     .join(', ');
-                
+
                 children.push(
                     new Paragraph({
                         children: [new TextRun(skillsText)],
                     })
                 );
             }
-            
+
             const doc = new Document({
                 sections: [{
                     properties: {},
                     children: children,
                 }],
             });
-            
+
             // Générer et télécharger le document
             Packer.toBlob(doc).then(blob => {
                 const fileName = `CV_${formData.basics.name.replace(/\s+/g, '_')}_${new Date().getFullYear()}.docx`;
@@ -2966,11 +2950,11 @@
                 link.href = url;
                 link.download = fileName;
                 link.style.display = 'none';
-                
+
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                
+
                 URL.revokeObjectURL(url);
                 showSuccessMessage('CV DOCX généré avec succès !');
             });
@@ -2980,42 +2964,42 @@
             // Simulation de génération DOCX
             const content = generateCVContent(formData);
             const fileName = `CV_${formData.basics.name.replace(/\s+/g, '_')}_${new Date().getFullYear()}.docx`;
-            
+
             // Créer un blob avec le contenu (simulation)
             const blob = new Blob([content], { 
                 type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
             });
             const url = URL.createObjectURL(blob);
-            
+
             // Créer un lien de téléchargement
             const link = document.createElement('a');
             link.href = url;
             link.download = fileName;
             link.style.display = 'none';
-            
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             URL.revokeObjectURL(url);
             showSuccessMessage('CV DOCX téléchargé avec succès !');
         }
 
         function generateCVContent(formData) {
             let content = `${formData.basics.name || 'Curriculum Vitae'}\n\n`;
-            
+
             // Contact
             const contactInfo = [];
             if (formData.basics.email) contactInfo.push(`Email: ${formData.basics.email}`);
             if (formData.basics.phone) contactInfo.push(`Téléphone: ${formData.basics.phone}`);
             if (formData.basics.location) contactInfo.push(`Localisation: ${formData.basics.location}`);
             content += contactInfo.join(' | ') + '\n\n';
-            
+
             // Résumé
             if (formData.basics.summary) {
                 content += `RÉSUMÉ PROFESSIONNEL\n${formData.basics.summary}\n\n`;
             }
-            
+
             // Expériences
             if (formData.experience.length > 0) {
                 content += 'EXPÉRIENCE PROFESSIONNELLE\n';
@@ -3030,7 +3014,7 @@
                     content += '\n';
                 });
             }
-            
+
             // Compétences
             if (formData.skills.length > 0) {
                 content += 'COMPÉTENCES\n';
@@ -3038,7 +3022,7 @@
                     content += `• ${skill.name} (${getLevelLabel(skill.level)})\n`;
                 });
             }
-            
+
             return content;
         }
 
@@ -3062,9 +3046,9 @@
                     <span>${message}</span>
                 </div>
             `;
-            
+
             document.body.appendChild(toast);
-            
+
             setTimeout(() => {
                 toast.style.animation = 'slideOut 0.3s ease-in';
                 setTimeout(() => toast.remove(), 300);
@@ -3075,7 +3059,7 @@
             // Generate shareable link
             const shareId = 'cv_' + Date.now();
             const shareUrl = `${window.location.origin}/shared/${shareId}`;
-            
+
             navigator.clipboard.writeText(shareUrl).then(() => {
                 alert('Lien copié dans le presse-papier !\n' + shareUrl);
             });
@@ -3086,19 +3070,19 @@
             const dataStr = JSON.stringify(formData, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(dataBlob);
-            
+
             const link = document.createElement('a');
             link.href = url;
             link.download = 'cv-data.json';
             link.click();
-            
+
             URL.revokeObjectURL(url);
         }
 
         // Initialize advanced features
         document.addEventListener('DOMContentLoaded', () => {
             // ... existing initialization code ...
-            
+
             // Initialize color picker after other initializations
             setTimeout(() => {
                 initializeColorPicker();

@@ -54,103 +54,74 @@
       "loading": "Loading..."
     },
     "generator": {
-      "title": "Professional CV Generator",
+      "title": "Générateur de CV Professionnel",
       "subtitle": "Créez votre CV parfait en quelques minutes avec notre générateur intelligent",
+      "builderTitle": "Créateur de CV Intelligent",
+      "builderSubtitle": "Suivez les étapes pour créer votre CV parfait",
       "tabs": {
         "basics": "Informations de base",
         "experience": "Expérience",
         "education": "Formation",
         "skills": "Compétences",
-        "generate": "Générer le CV"
+        "generate": "Générer"
       },
       "sections": {
         "personal": "Informations personnelles",
         "experience": "Expérience professionnelle",
         "education": "Formation",
         "skills": "Compétences",
-        "template": "Choisissez votre modèle"
+        "ai": "Assistant IA",
+        "customization": "Personnalisation avancée",
+        "template": "Choisissez votre template"
       },
       "fields": {
         "firstName": "Prénom",
-        "lastName": "Nom de famille",
+        "lastName": "Nom",
         "email": "Email",
         "phone": "Téléphone",
         "location": "Ville",
         "website": "Site web",
-        "summary": "Résumé professionnel",
-        "company": "Entreprise",
-        "position": "Poste",
-        "startDate": "Date de début",
-        "endDate": "Date de fin",
-        "description": "Description",
-        "institution": "Institution",
-        "degree": "Diplôme",
-        "skillName": "Nom de la compétence",
-        "skillLevel": "Niveau"
-      },
-      "levels": {
-        "beginner": "Débutant",
-        "intermediate": "Intermédiaire",
-        "advanced": "Avancé",
-        "expert": "Expert"
+        "summary": "Résumé professionnel"
       },
       "buttons": {
-            "addExperience": "Ajouter une expérience",
-            "addEducation": "Ajouter une formation", 
-            "addSkill": "Ajouter une compétence",
-            "generate": "Générer mon CV",
-            "view": "Voir le CV",
-            "download": "Télécharger PDF",
-            "edit": "Modifier"
-          },
-          "sections": {
-            "ai": "Assistant IA",
-            "customization": "Personnalisation avancée",
-            "template": "Choisissez votre template",
-            "analytics": "Analyse de votre CV"
-          },
-          "builderTitle": "Créateur de CV Intelligent",
-          "builderSubtitle": "Suivez les étapes pour créer votre CV parfait",
-          "templates": {
-            "modern": "Moderne et élégant",
-            "classic": "Classique et professionnel",
-            "creative": "Créatif et coloré"
-          },
-          "messages": {
-            "generating": "Génération de votre CV en cours...",
-            "success": "CV généré avec succès!"
-          }
-        },
-        "preview": {
-          "title": "Aperçu en temps réel"er mon CV",
-            "view": "Voir le CV",
-            "download": "Télécharger PDF",
-            "edit": "Modifier"
-          },
-          "sections": {
-            "ai": "Assistant IA",
-            "customization": "Personnalisation avancée",
-            "template": "Choisissez votre template",
-            "analytics": "Analyse de votre CV"
-          },
-      "theme": {
-        "toggle": "Changer de thème",
-        "light": "Mode clair",
-        "dark": "Mode sombre"
+        "addExperience": "Ajouter une expérience",
+        "addEducation": "Ajouter une formation",
+        "addSkill": "Ajouter une compétence",
+        "generate": "Générer mon CV",
+        "view": "Voir le CV",
+        "download": "Télécharger",
+        "edit": "Modifier"
       },
       "templates": {
-        "modern": "Moderne et élégant",
+        "modern": "Moderne et épuré",
         "classic": "Classique et professionnel",
         "creative": "Créatif et coloré"
       },
       "messages": {
-        "generating": "Génération de votre CV...",
+        "generating": "Génération de votre CV en cours...",
         "success": "CV généré avec succès !"
-      },
-      "preview": {
-        "title": "Aperçu en temps réel",
-        "toggle": "Basculer l'aperçu"
       }
+    },
+    "preview": {
+      "title": "Aperçu en temps réel"
+    },
+    "theme": {
+      "toggle": "Changer de thème",
+      "light": "Mode clair",
+      "dark": "Mode sombre"
+    },
+    "templates": {
+      "modern": "Moderne et élégant",
+      "classic": "Classique et professionnel",
+      "creative": "Créatif et coloré"
+    },
+    "messages": {
+      "generating": "Génération de votre CV...",
+      "success": "CV généré avec succès !"
+    },
+    "preview": {
+      "title": "Aperçu en temps réel",
+      "toggle": "Basculer l'aperçu"
     }
   },
   "en": {
@@ -211,6 +182,8 @@
     "generator": {
       "title": "Professional CV Generator",
       "subtitle": "Create your perfect CV in minutes with our intelligent generator",
+      "builderTitle": "Intelligent CV Builder",
+      "builderSubtitle": "Follow steps to create your perfect CV",
       "tabs": {
         "basics": "Basic Information",
         "experience": "Experience",
@@ -223,6 +196,8 @@
         "experience": "Professional Experience",
         "education": "Education",
         "skills": "Skills",
+        "ai": "AI Assistant",
+        "customization": "Advanced Customization",
         "template": "Choose your template"
       },
       "fields": {
@@ -232,42 +207,16 @@
         "phone": "Phone",
         "location": "City",
         "website": "Website",
-        "summary": "Professional Summary",
-        "company": "Company",
-        "position": "Position",
-        "startDate": "Start Date",
-        "endDate": "End Date",
-        "description": "Description",
-        "institution": "Institution",
-        "degree": "Degree",
-        "skillName": "Skill Name",
-        "skillLevel": "Level"
-      },
-      "levels": {
-        "beginner": "Beginner",
-        "intermediate": "Intermediate",
-        "advanced": "Advanced",
-        "expert": "Expert"
+        "summary": "Professional Summary"
       },
       "buttons": {
-          "addExperience": "Add Experience",
-          "addEducation": "Add Education",
-          "addSkill": "Add Skill", 
-          "generate": "Generate my CV",
-          "view": "View CV",
-          "download": "Download PDF",
-          "edit": "Edit"
-        },
-        "sections": {
-          "ai": "AI Assistant",
-          "customization": "Advanced Customization",
-          "template": "Choose your template",
-          "analytics": "CV Analysis"
-        },
-      "theme": {
-        "toggle": "Toggle theme",
-        "light": "Light Mode",
-        "dark": "Dark Mode"
+        "addExperience": "Add Experience",
+        "addEducation": "Add Education",
+        "addSkill": "Add Skill",
+        "generate": "Generate my CV",
+        "view": "View CV",
+        "download": "Download PDF",
+        "edit": "Edit"
       },
       "templates": {
         "modern": "Modern and elegant",
@@ -277,11 +226,25 @@
       "messages": {
         "generating": "Generating your CV...",
         "success": "CV generated successfully!"
-      },
-      "preview": {
-        "title": "Real-time Preview",
-        "toggle": "Toggle preview"
       }
+    },
+    "preview": {
+      "title": "Real-time Preview",
+      "toggle": "Toggle preview"
+    },
+    "theme": {
+      "toggle": "Toggle theme",
+      "light": "Light Mode",
+      "dark": "Dark Mode"
+    },
+    "templates": {
+      "modern": "Modern and elegant",
+      "classic": "Classic and professional",
+      "creative": "Creative and colorful"
+    },
+    "messages": {
+      "generating": "Generating your CV...",
+      "success": "CV generated successfully!"
     }
   }
 }
