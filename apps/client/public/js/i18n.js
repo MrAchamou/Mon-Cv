@@ -23,12 +23,15 @@ class I18n {
             // Marquer comme initialisé
             this.initialized = true;
             
+            // Traduire la page immédiatement
+            this.translatePage();
+            
             // Exécuter les callbacks en attente
             this.callbacks.forEach(callback => callback());
             this.callbacks = [];
             
-            // Traduire la page
-            this.translatePage();
+            // Traduire à nouveau après un délai pour s'assurer que tout est traduit
+            setTimeout(() => this.translatePage(), 100);
             
         } catch (error) {
             console.error('Erreur lors de l\'initialisation de i18n:', error);
