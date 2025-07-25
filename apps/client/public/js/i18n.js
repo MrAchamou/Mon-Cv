@@ -42,131 +42,253 @@ class I18n {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             this.translations = await response.json();
-            console.log('Translations loaded:', this.translations);
+            console.log('Translations loaded successfully');
         } catch (error) {
             console.error('Erreur lors du chargement des traductions:', error);
-            // Traductions de fallback
+            // Traductions de fallback identiques au fichier JSON
             this.translations = {
-                fr: {
-                    nav: {
-                        about: "À propos",
-                        experience: "Expérience",
-                        education: "Formation",
-                        skills: "Compétences",
-                        contact: "Contact"
+                "fr": {
+                    "nav": {
+                        "about": "À propos",
+                        "experience": "Expérience",
+                        "education": "Formation",
+                        "skills": "Compétences",
+                        "contact": "Contact"
                     },
-                    generator: {
-                        title: "Générateur de CV Professionnel",
-                        subtitle: "Créez votre CV parfait en quelques minutes",
-                        builderTitle: "Créateur de CV Intelligent",
-                        builderSubtitle: "Suivez les étapes pour créer votre CV parfait",
-                        tabs: {
-                            basics: "Informations de base",
-                            experience: "Expérience",
-                            education: "Formation",
-                            skills: "Compétences",
-                            generate: "Générer"
+                    "sections": {
+                        "about": {
+                            "title": "À propos de moi",
+                            "description": "Développeur passionné avec une forte expérience en développement web moderne."
                         },
-                        sections: {
-                            personal: "Informations personnelles",
-                            experience: "Expérience professionnelle",
-                            education: "Formation",
-                            skills: "Compétences",
-                            ai: "Assistant IA",
-                            customization: "Personnalisation avancée",
-                            template: "Choisissez votre template"
+                        "experience": {
+                            "title": "Expérience professionnelle",
+                            "position": "Poste",
+                            "company": "Entreprise",
+                            "location": "Lieu",
+                            "duration": "Durée"
                         },
-                        fields: {
-                            firstName: "Prénom",
-                            lastName: "Nom",
-                            email: "Email",
-                            phone: "Téléphone",
-                            location: "Ville",
-                            website: "Site web",
-                            summary: "Résumé professionnel"
+                        "education": {
+                            "title": "Formation",
+                            "degree": "Diplôme",
+                            "institution": "Établissement",
+                            "year": "Année"
                         },
-                        buttons: {
-                            addExperience: "Ajouter une expérience",
-                            addEducation: "Ajouter une formation",
-                            addSkill: "Ajouter une compétence",
-                            generate: "Générer mon CV",
-                            view: "Voir le CV",
-                            download: "Télécharger PDF",
-                            edit: "Modifier"
+                        "skills": {
+                            "title": "Compétences",
+                            "technical": "Compétences techniques",
+                            "languages": "Langues"
                         },
-                        templates: {
-                            modern: "Moderne et élégant",
-                            classic: "Classique et professionnel",
-                            creative: "Créatif et coloré"
+                        "projects": {
+                            "title": "Projets",
+                            "description": "Description",
+                            "technologies": "Technologies utilisées"
                         },
-                        messages: {
-                            generating: "Génération de votre CV en cours...",
-                            success: "CV généré avec succès!"
+                        "contact": {
+                            "title": "Contact",
+                            "email": "Email",
+                            "phone": "Téléphone",
+                            "address": "Adresse",
+                            "website": "Site web"
                         }
                     },
-                    preview: {
-                        title: "Aperçu en temps réel"
+                    "common": {
+                        "download": "Télécharger PDF",
+                        "print": "Imprimer",
+                        "language": "Langue",
+                        "search": "Search...",
+                        "close": "Close",
+                        "save": "Save",
+                        "cancel": "Cancel",
+                        "loading": "Loading..."
+                    },
+                    "generator": {
+                        "title": "Générateur de CV Professionnel",
+                        "subtitle": "Créez votre CV parfait en quelques minutes avec notre générateur intelligent",
+                        "builderTitle": "Créateur de CV Intelligent",
+                        "builderSubtitle": "Suivez les étapes pour créer votre CV parfait",
+                        "tabs": {
+                            "basics": "Informations de base",
+                            "experience": "Expérience",
+                            "education": "Formation",
+                            "skills": "Compétences",
+                            "generate": "Générer"
+                        },
+                        "sections": {
+                            "personal": "Informations personnelles",
+                            "experience": "Expérience professionnelle",
+                            "education": "Formation",
+                            "skills": "Compétences",
+                            "ai": "Assistant IA",
+                            "customization": "Personnalisation avancée",
+                            "template": "Choisissez votre template"
+                        },
+                        "fields": {
+                            "firstName": "Prénom",
+                            "lastName": "Nom",
+                            "email": "Email",
+                            "phone": "Téléphone",
+                            "location": "Ville",
+                            "website": "Site web",
+                            "summary": "Résumé professionnel"
+                        },
+                        "buttons": {
+                            "addExperience": "Ajouter une expérience",
+                            "addEducation": "Ajouter une formation",
+                            "addSkill": "Ajouter une compétence",
+                            "generate": "Générer mon CV",
+                            "view": "Voir le CV",
+                            "download": "Télécharger",
+                            "edit": "Modifier"
+                        },
+                        "templates": {
+                            "modern": "Moderne et épuré",
+                            "classic": "Classique et professionnel",
+                            "creative": "Créatif et coloré"
+                        },
+                        "messages": {
+                            "generating": "Génération de votre CV en cours...",
+                            "success": "CV généré avec succès !"
+                        }
+                    },
+                    "preview": {
+                        "title": "Aperçu en temps réel"
+                    },
+                    "theme": {
+                        "toggle": "Changer de thème",
+                        "light": "Mode clair",
+                        "dark": "Mode sombre"
+                    },
+                    "templates": {
+                        "modern": "Moderne et élégant",
+                        "classic": "Classique et professionnel",
+                        "creative": "Créatif et coloré"
+                    },
+                    "messages": {
+                        "generating": "Génération de votre CV...",
+                        "success": "CV généré avec succès !"
                     }
                 },
-                en: {
-                    nav: {
-                        about: "About",
-                        experience: "Experience",
-                        education: "Education",
-                        skills: "Skills",
-                        contact: "Contact"
+                "en": {
+                    "nav": {
+                        "about": "About",
+                        "experience": "Experience",
+                        "education": "Education",
+                        "skills": "Skills",
+                        "projects": "Projects",
+                        "contact": "Contact"
                     },
-                    generator: {
-                        title: "Professional CV Generator",
-                        subtitle: "Create your perfect CV in minutes",
-                        builderTitle: "Intelligent CV Builder",
-                        builderSubtitle: "Follow steps to create your perfect CV",
-                        tabs: {
-                            basics: "Basic Information",
-                            experience: "Experience",
-                            education: "Education",
-                            skills: "Skills",
-                            generate: "Generate CV"
+                    "sections": {
+                        "about": {
+                            "title": "About me",
+                            "description": "Passionate developer with strong experience in modern web development."
                         },
-                        sections: {
-                            personal: "Personal Information",
-                            experience: "Professional Experience",
-                            education: "Education",
-                            skills: "Skills",
-                            ai: "AI Assistant",
-                            customization: "Advanced Customization",
-                            template: "Choose your template"
+                        "experience": {
+                            "title": "Professional Experience",
+                            "position": "Position",
+                            "company": "Company",
+                            "location": "Location",
+                            "duration": "Duration"
                         },
-                        fields: {
-                            firstName: "First Name",
-                            lastName: "Last Name",
-                            email: "Email",
-                            phone: "Phone",
-                            location: "City",
-                            website: "Website",
-                            summary: "Professional Summary"
+                        "education": {
+                            "title": "Education",
+                            "degree": "Degree",
+                            "institution": "Institution",
+                            "year": "Year"
                         },
-                        buttons: {
-                            addExperience: "Add Experience",
-                            addEducation: "Add Education",
-                            addSkill: "Add Skill",
-                            generate: "Generate my CV",
-                            view: "View CV",
-                            download: "Download PDF",
-                            edit: "Edit"
+                        "skills": {
+                            "title": "Skills",
+                            "technical": "Technical Skills",
+                            "languages": "Languages"
                         },
-                        templates: {
-                            modern: "Modern and elegant",
-                            classic: "Classic and professional",
-                            creative: "Creative and colorful"
+                        "projects": {
+                            "title": "Projects",
+                            "description": "Description",
+                            "technologies": "Technologies used"
                         },
-                        messages: {
-                            generating: "Generating your CV...",
-                            success: "CV generated successfully!"
+                        "contact": {
+                            "title": "Contact",
+                            "email": "Email",
+                            "phone": "Phone",
+                            "address": "Address",
+                            "website": "Website"
                         }
                     },
-                    preview: {
-                        title: "Real-time Preview"
+                    "common": {
+                        "download": "Download PDF",
+                        "print": "Print",
+                        "language": "Language",
+                        "search": "Search...",
+                        "close": "Close",
+                        "save": "Save",
+                        "cancel": "Cancel",
+                        "loading": "Loading..."
+                    },
+                    "generator": {
+                        "title": "Professional CV Generator",
+                        "subtitle": "Create your perfect CV in minutes with our intelligent generator",
+                        "builderTitle": "Intelligent CV Builder",
+                        "builderSubtitle": "Follow steps to create your perfect CV",
+                        "tabs": {
+                            "basics": "Basic Information",
+                            "experience": "Experience",
+                            "education": "Education",
+                            "skills": "Skills",
+                            "generate": "Generate CV"
+                        },
+                        "sections": {
+                            "personal": "Personal Information",
+                            "experience": "Professional Experience",
+                            "education": "Education",
+                            "skills": "Skills",
+                            "ai": "AI Assistant",
+                            "customization": "Advanced Customization",
+                            "template": "Choose your template"
+                        },
+                        "fields": {
+                            "firstName": "First Name",
+                            "lastName": "Last Name",
+                            "email": "Email",
+                            "phone": "Phone",
+                            "location": "City",
+                            "website": "Website",
+                            "summary": "Professional Summary"
+                        },
+                        "buttons": {
+                            "addExperience": "Add Experience",
+                            "addEducation": "Add Education",
+                            "addSkill": "Add Skill",
+                            "generate": "Generate my CV",
+                            "view": "View CV",
+                            "download": "Download PDF",
+                            "edit": "Edit"
+                        },
+                        "templates": {
+                            "modern": "Modern and elegant",
+                            "classic": "Classic and professional",
+                            "creative": "Creative and colorful"
+                        },
+                        "messages": {
+                            "generating": "Generating your CV...",
+                            "success": "CV generated successfully!"
+                        }
+                    },
+                    "preview": {
+                        "title": "Real-time Preview",
+                        "toggle": "Toggle preview"
+                    },
+                    "theme": {
+                        "toggle": "Toggle theme",
+                        "light": "Light Mode",
+                        "dark": "Dark Mode"
+                    },
+                    "templates": {
+                        "modern": "Modern and elegant",
+                        "classic": "Classic and professional",
+                        "creative": "Creative and colorful"
+                    },
+                    "messages": {
+                        "generating": "Generating your CV...",
+                        "success": "CV generated successfully!"
                     }
                 }
             };
@@ -182,7 +304,22 @@ class I18n {
             if (value && typeof value === 'object' && k in value) {
                 value = value[k];
             } else {
-                console.log(`Translation not found for key: ${key}`);
+                // Fallback vers l'anglais si la clé n'existe pas dans la langue courante
+                if (this.currentLanguage !== 'en') {
+                    let englishValue = this.translations['en'];
+                    const keysAgain = key.split('.');
+                    for (const kEn of keysAgain) {
+                        if (englishValue && typeof englishValue === 'object' && kEn in englishValue) {
+                            englishValue = englishValue[kEn];
+                        } else {
+                            englishValue = null;
+                            break;
+                        }
+                    }
+                    if (englishValue) {
+                        return englishValue;
+                    }
+                }
                 return defaultValue || key;
             }
         }
