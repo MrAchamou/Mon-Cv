@@ -46,6 +46,8 @@ class I18n {
             }
             this.translations = await response.json();
             console.log('Translations loaded successfully');
+            console.log('Available languages:', Object.keys(this.translations));
+            console.log('FR generator keys:', Object.keys(this.translations.fr?.generator || {}));
         } catch (error) {
             console.error('Erreur lors du chargement des traductions:', error);
             // Traductions de fallback identiques au fichier JSON
